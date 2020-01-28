@@ -293,7 +293,7 @@ public class InfinityComMain extends javax.swing.JFrame {
                 else file.delete();
                 
                 
-                if(rs.getString("role")=="admin"){
+                if(rs.getString("role")=="Admin"){
                     Dashboard dashobj = new Dashboard();
                     dashobj.setVisible(true);
                     this.dispose();
