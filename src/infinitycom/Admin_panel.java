@@ -3,13 +3,22 @@ package infinitycom;
 
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import users.Admin;
 
 
 public class Admin_panel extends javax.swing.JFrame {
 
+    Admin admin;
     
-    public Admin_panel() {
+    public Admin_panel(){
         initComponents();
+    }
+    
+    public Admin_panel(Admin user) {
+        initComponents();
+        
+        //initialize admin
+        this.admin = user;
         
         //Select users menu for first time login as the default
         default_selected();
@@ -296,7 +305,12 @@ public class Admin_panel extends javax.swing.JFrame {
         jPasswordField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jButton13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton13.setText("Save");
+        jButton13.setText("Add");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         jButton14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jButton14.setText("Clear form");
@@ -1018,8 +1032,6 @@ public class Admin_panel extends javax.swing.JFrame {
 
         logout_panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jProgressBar1.setBackground(new java.awt.Color(255, 0, 102));
-        jProgressBar1.setForeground(new java.awt.Color(0, 0, 0));
         jProgressBar1.setValue(50);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1063,7 +1075,7 @@ public class Admin_panel extends javax.swing.JFrame {
         main_panelLayout.setVerticalGroup(
             main_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(menus_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(dynamic1, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(dynamic1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1092,6 +1104,7 @@ public class Admin_panel extends javax.swing.JFrame {
     
     private void usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersMouseClicked
         default_selected();
+        this.admin.add_user();
     }//GEN-LAST:event_usersMouseClicked
 
     private void inventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryMouseClicked
@@ -1145,6 +1158,10 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.repaint();
         dynamic1.revalidate();
     }//GEN-LAST:event_logoutMouseClicked
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        
+    }//GEN-LAST:event_jButton13ActionPerformed
 
     private void default_selected(){
         this.remove_selection();
@@ -1226,7 +1243,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -1252,8 +1268,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
@@ -1284,8 +1298,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel logout;
     private javax.swing.JPanel logout_panel;
     private javax.swing.JPanel main_panel;
@@ -1299,7 +1311,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> user_type;
     private javax.swing.JLabel users;
     private javax.swing.JPanel users_add_update;
-    private javax.swing.JPanel users_add_update2;
     private javax.swing.JPanel users_panel;
     private javax.swing.JPanel view_users;
     // End of variables declaration//GEN-END:variables

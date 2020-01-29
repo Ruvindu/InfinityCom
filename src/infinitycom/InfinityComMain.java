@@ -12,6 +12,10 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import users.Admin;
+import users.Cashier;
+import users.UserProducer;
+import users.Users;
 
 
 
@@ -292,14 +296,24 @@ public class InfinityComMain extends javax.swing.JFrame {
                 if(remember_me.isSelected())set_as_me_remember();
                 else file.delete();
                 
+                //create a user
+                UserProducer usr = new UserProducer();
                 
-                if(rs.getString("role")=="Admin"){
-                    Dashboard dashobj = new Dashboard();
-                    dashobj.setVisible(true);
-                    this.dispose();
-                }else{
-                    Admin_panel adminobj = new Admin_panel();
+                if("Admin".equals(rs.getString("role"))){
+                    
+                    Users a = usr.request_user("ADMIN");
+                    a.user_producer( Integer.parseInt(rs.getString("user_id")), rs.getString("user_name"), rs.getString("user_email") );
+                    
+                    Admin_panel adminobj = new Admin_panel((Admin) a);
                     adminobj.setVisible(true);
+                    this.dispose();
+                         
+                }else{
+                    Users c = usr.request_user("CASHIER");
+                    c.user_producer( Integer.parseInt(rs.getString("user_id")), rs.getString("user_name"), rs.getString("user_email") );
+                    
+                    Dashboard dashobj = new Dashboard((Cashier) c);
+                    dashobj.setVisible(true);
                     this.dispose();
                 }
                     

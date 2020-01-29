@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 
 public class DBConnection {
     
-    private static DBConnection obj=new DBConnection();
+    private static final DBConnection obj=new DBConnection();
     
     private DBConnection(){}
     
