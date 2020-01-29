@@ -2,13 +2,19 @@
 package infinitycom;
 
 import java.awt.Color;
+import java.sql.ResultSet;
 import javax.swing.BorderFactory;
+import javax.swing.table.DefaultTableModel;
+import net.proteanit.sql.DbUtils;
 import users.Admin;
 
 
 public class Admin_panel extends javax.swing.JFrame {
 
     Admin admin;
+    
+    
+    Encryption enc = Encryption.getEncryption();
     
     public Admin_panel(){
         initComponents();
@@ -47,15 +53,15 @@ public class Admin_panel extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         user_type = new javax.swing.JComboBox<>();
         jLabel21 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        user_name = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        user_email = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jButton13 = new javax.swing.JButton();
-        jButton14 = new javax.swing.JButton();
-        jButton15 = new javax.swing.JButton();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        user_pwd = new javax.swing.JPasswordField();
+        user_btn = new javax.swing.JButton();
+        clear_user_form = new javax.swing.JButton();
+        remove_user = new javax.swing.JButton();
+        reset_default_pwd = new javax.swing.JCheckBox();
         jLabel24 = new javax.swing.JLabel();
         view_users = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -292,38 +298,40 @@ public class Admin_panel extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel21.setText("User name");
 
-        jTextField3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        user_name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel22.setText("Email");
 
-        jTextField4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        user_email.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel23.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel23.setText("Password");
 
-        jPasswordField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        user_pwd.setEditable(false);
+        user_pwd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        user_pwd.setText("12345");
 
-        jButton13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton13.setText("Add");
-        jButton13.addActionListener(new java.awt.event.ActionListener() {
+        user_btn.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        user_btn.setText("Add");
+        user_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton13ActionPerformed(evt);
+                user_btnActionPerformed(evt);
             }
         });
 
-        jButton14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton14.setText("Clear form");
+        clear_user_form.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clear_user_form.setText("Clear form");
 
-        jButton15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton15.setText("Remove");
+        remove_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        remove_user.setText("Remove");
 
-        jCheckBox2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jCheckBox2.setText("Reset default password");
+        reset_default_pwd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        reset_default_pwd.setText("Reset default password");
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel24.setText("<html> Info : Concern the default password as 123  </html> ");
+        jLabel24.setText("<html> Info : Concern the default password as 12345  </html> ");
 
         javax.swing.GroupLayout users_add_updateLayout = new javax.swing.GroupLayout(users_add_update);
         users_add_update.setLayout(users_add_updateLayout);
@@ -333,17 +341,17 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(users_add_updateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel24)
-                    .addComponent(jTextField3)
-                    .addComponent(jTextField4)
-                    .addComponent(jPasswordField2)
+                    .addComponent(user_name)
+                    .addComponent(user_email)
+                    .addComponent(user_pwd)
                     .addGroup(users_add_updateLayout.createSequentialGroup()
-                        .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                        .addComponent(reset_default_pwd, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(user_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(users_add_updateLayout.createSequentialGroup()
-                        .addComponent(jButton14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(clear_user_form, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(remove_user, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(users_add_updateLayout.createSequentialGroup()
                         .addGroup(users_add_updateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel20)
@@ -365,23 +373,23 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(user_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(user_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(user_pwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addGroup(users_add_updateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton13, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(user_btn, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(reset_default_pwd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addGroup(users_add_updateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(clear_user_form, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(remove_user, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(69, 69, 69))
@@ -402,8 +410,15 @@ public class Admin_panel extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        user_table.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         user_table.setGridColor(new java.awt.Color(204, 204, 204));
+        user_table.setName(""); // NOI18N
         user_table.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        user_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                user_tableMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(user_table);
 
         javax.swing.GroupLayout view_usersLayout = new javax.swing.GroupLayout(view_users);
@@ -1104,7 +1119,6 @@ public class Admin_panel extends javax.swing.JFrame {
     
     private void usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersMouseClicked
         default_selected();
-        this.admin.add_user();
     }//GEN-LAST:event_usersMouseClicked
 
     private void inventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryMouseClicked
@@ -1159,10 +1173,6 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.revalidate();
     }//GEN-LAST:event_logoutMouseClicked
 
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        
-    }//GEN-LAST:event_jButton13ActionPerformed
-
     private void default_selected(){
         this.remove_selection();
         users.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
@@ -1174,6 +1184,42 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.add(users_panel);
         dynamic1.repaint();
         dynamic1.revalidate();
+        
+        //refresh table
+        refresh_user_tbl();
+    }
+    
+    
+    
+    private void user_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_btnActionPerformed
+        
+        String UType = (String) user_type.getSelectedItem();
+        String UName = user_name.getText();
+        String UEmail = user_email.getText();
+        String UPwd = enc.encryptThis(user_pwd.getText());
+        
+        this.admin.user_redirector(UType,UName,UEmail,UPwd);
+        
+        //refresh table
+        refresh_user_tbl();
+    }//GEN-LAST:event_user_btnActionPerformed
+
+    private void user_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_user_tableMouseClicked
+        DefaultTableModel model = (DefaultTableModel)user_table.getModel();
+        int selected_row_index = user_table.getSelectedRow();
+        
+        /*Get selected id*/
+        String selected_id = model.getValueAt(selected_row_index, 0).toString();
+        
+        this.admin.setSelected_user(Integer.parseInt(selected_id));
+        
+    }//GEN-LAST:event_user_tableMouseClicked
+
+
+    public void refresh_user_tbl(){
+        
+        ResultSet res_users = this.admin.get_all_users();
+        if(res_users!=null)user_table.setModel(DbUtils.resultSetToTableModel(res_users));
     }
     
     /**
@@ -1230,6 +1276,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JTextField cat_name8;
     private javax.swing.JTextField cat_name9;
     private javax.swing.JPanel change_password;
+    private javax.swing.JButton clear_user_form;
     private javax.swing.JPanel dynamic1;
     private javax.swing.JPanel edit_profile;
     private javax.swing.JPanel header;
@@ -1240,9 +1287,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -1250,7 +1294,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1283,7 +1326,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JPasswordField jPasswordField5;
     private javax.swing.JPasswordField jPasswordField6;
     private javax.swing.JPasswordField jPasswordField7;
@@ -1296,17 +1338,21 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel logout;
     private javax.swing.JPanel logout_panel;
     private javax.swing.JPanel main_panel;
     private javax.swing.JPanel menus;
     private javax.swing.JPanel menus_bg;
+    private javax.swing.JButton remove_user;
     private javax.swing.JLabel reports;
+    private javax.swing.JCheckBox reset_default_pwd;
     private javax.swing.JPanel setting_panel;
     private javax.swing.JLabel settings;
     private javax.swing.JLabel theme;
+    private javax.swing.JButton user_btn;
+    private javax.swing.JTextField user_email;
+    private javax.swing.JTextField user_name;
+    private javax.swing.JPasswordField user_pwd;
     private javax.swing.JTable user_table;
     private javax.swing.JComboBox<String> user_type;
     private javax.swing.JLabel users;
