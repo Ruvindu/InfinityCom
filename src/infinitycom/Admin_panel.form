@@ -1542,8 +1542,8 @@
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextField1" max="32767" attributes="0"/>
-                                  <Component id="jTextField2" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="edit_user_email" max="32767" attributes="0"/>
+                                  <Component id="edit_user_name" alignment="0" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -1553,7 +1553,7 @@
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                      <Component id="jButton1" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Component id="save_user_detail_changes" min="-2" pref="100" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -1566,13 +1566,13 @@
                               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextField2" min="-2" max="-2" attributes="0"/>
+                              <Component id="edit_user_name" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+                              <Component id="edit_user_email" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jButton1" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="save_user_detail_changes" min="-2" pref="35" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -1595,27 +1595,30 @@
                         <Property name="text" type="java.lang.String" value="Email"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField1">
+                    <Component class="javax.swing.JTextField" name="edit_user_email">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="14" style="0"/>
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField2">
+                    <Component class="javax.swing.JTextField" name="edit_user_name">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="14" style="0"/>
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton1">
+                    <Component class="javax.swing.JButton" name="save_user_detail_changes">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="14" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Save"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="save_user_detail_changesActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1661,7 +1664,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jButton18" min="-2" pref="100" max="-2" attributes="0"/>
+                              <Component id="change_pwd" min="-2" pref="100" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
@@ -1677,13 +1680,13 @@
                                   </Group>
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="jPasswordField5" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jPasswordField7" max="32767" attributes="0"/>
+                                          <Component id="current_pwd" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="confirm_pwd" max="32767" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jPasswordField6" max="32767" attributes="0"/>
+                                      <Component id="new_pwd" max="32767" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -1696,24 +1699,24 @@
                               <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                               <Component id="jLabel29" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPasswordField5" min="-2" max="-2" attributes="0"/>
+                              <Component id="current_pwd" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel30" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPasswordField6" min="-2" max="-2" attributes="0"/>
+                              <Component id="new_pwd" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="jLabel31" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPasswordField7" min="-2" max="-2" attributes="0"/>
+                              <Component id="confirm_pwd" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton18" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="change_pwd" min="-2" pref="35" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JPasswordField" name="jPasswordField5">
+                    <Component class="javax.swing.JPasswordField" name="current_pwd">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="14" style="0"/>
@@ -1736,7 +1739,7 @@
                         <Property name="text" type="java.lang.String" value="New Password"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JPasswordField" name="jPasswordField6">
+                    <Component class="javax.swing.JPasswordField" name="new_pwd">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="14" style="0"/>
@@ -1751,20 +1754,23 @@
                         <Property name="text" type="java.lang.String" value="Confirm Password"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JPasswordField" name="jPasswordField7">
+                    <Component class="javax.swing.JPasswordField" name="confirm_pwd">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="14" style="0"/>
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton18">
+                    <Component class="javax.swing.JButton" name="change_pwd">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="14" style="0"/>
                         </Property>
                         <Property name="text" type="java.lang.String" value="Change"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="change_pwdActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1789,12 +1795,12 @@
                           <EmptySpace pref="185" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jProgressBar1" min="-2" pref="550" max="-2" attributes="0"/>
+                                  <Component id="logout_ProgressBar" min="-2" pref="550" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="157" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Component id="jLabel1" min="-2" pref="95" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="385" max="-2" attributes="0"/>
+                                  <Component id="logout_status" min="-2" pref="185" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="342" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -1804,26 +1810,23 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="278" max="-2" attributes="0"/>
-                          <Component id="jProgressBar1" min="-2" pref="26" max="-2" attributes="0"/>
+                          <Component id="logout_ProgressBar" min="-2" pref="26" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="302" max="32767" attributes="0"/>
+                          <Component id="logout_status" min="-2" pref="20" max="-2" attributes="0"/>
+                          <EmptySpace pref="299" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JProgressBar" name="jProgressBar1">
-                  <Properties>
-                    <Property name="value" type="int" value="50"/>
-                  </Properties>
+                <Component class="javax.swing.JProgressBar" name="logout_ProgressBar">
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel1">
+                <Component class="javax.swing.JLabel" name="logout_status">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Loginng out...."/>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
                   </Properties>
                 </Component>
               </SubComponents>

@@ -1,6 +1,7 @@
 package infinitycom;
 
 import java.awt.Color;
+import static java.lang.Thread.sleep;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -118,21 +119,21 @@ public class Admin_panel extends javax.swing.JFrame {
         edit_profile = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        edit_user_email = new javax.swing.JTextField();
+        edit_user_name = new javax.swing.JTextField();
+        save_user_detail_changes = new javax.swing.JButton();
         barcode_config = new javax.swing.JPanel();
         change_password = new javax.swing.JPanel();
-        jPasswordField5 = new javax.swing.JPasswordField();
+        current_pwd = new javax.swing.JPasswordField();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
-        jPasswordField6 = new javax.swing.JPasswordField();
+        new_pwd = new javax.swing.JPasswordField();
         jLabel31 = new javax.swing.JLabel();
-        jPasswordField7 = new javax.swing.JPasswordField();
-        jButton18 = new javax.swing.JButton();
+        confirm_pwd = new javax.swing.JPasswordField();
+        change_pwd = new javax.swing.JButton();
         logout_panel = new javax.swing.JPanel();
-        jProgressBar1 = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+        logout_ProgressBar = new javax.swing.JProgressBar();
+        logout_status = new javax.swing.JLabel();
 
         jLabel3.setText("jLabel3");
 
@@ -909,12 +910,17 @@ public class Admin_panel extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setText("Email");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        edit_user_email.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        edit_user_name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("Save");
+        save_user_detail_changes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        save_user_detail_changes.setText("Save");
+        save_user_detail_changes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_user_detail_changesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout edit_profileLayout = new javax.swing.GroupLayout(edit_profile);
         edit_profile.setLayout(edit_profileLayout);
@@ -923,8 +929,8 @@ public class Admin_panel extends javax.swing.JFrame {
             .addGroup(edit_profileLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(edit_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
+                    .addComponent(edit_user_email)
+                    .addComponent(edit_user_name)
                     .addGroup(edit_profileLayout.createSequentialGroup()
                         .addGroup(edit_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -932,7 +938,7 @@ public class Admin_panel extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, edit_profileLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(save_user_detail_changes, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         edit_profileLayout.setVerticalGroup(
@@ -941,13 +947,13 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(edit_user_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(edit_user_email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(save_user_detail_changes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -968,7 +974,7 @@ public class Admin_panel extends javax.swing.JFrame {
         change_password.setBackground(new java.awt.Color(255, 255, 255));
         change_password.setBorder(javax.swing.BorderFactory.createTitledBorder("Change password"));
 
-        jPasswordField5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        current_pwd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel29.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel29.setText("Current Password");
@@ -976,15 +982,20 @@ public class Admin_panel extends javax.swing.JFrame {
         jLabel30.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel30.setText("New Password");
 
-        jPasswordField6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        new_pwd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel31.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel31.setText("Confirm Password");
 
-        jPasswordField7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        confirm_pwd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jButton18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton18.setText("Change");
+        change_pwd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        change_pwd.setText("Change");
+        change_pwd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                change_pwdActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout change_passwordLayout = new javax.swing.GroupLayout(change_password);
         change_password.setLayout(change_passwordLayout);
@@ -992,7 +1003,7 @@ public class Admin_panel extends javax.swing.JFrame {
             change_passwordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, change_passwordLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(change_pwd, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(change_passwordLayout.createSequentialGroup()
                 .addContainerGap()
@@ -1005,11 +1016,11 @@ public class Admin_panel extends javax.swing.JFrame {
                         .addGap(166, 166, 166))
                     .addGroup(change_passwordLayout.createSequentialGroup()
                         .addGroup(change_passwordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPasswordField5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField7))
+                            .addComponent(current_pwd, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(confirm_pwd))
                         .addContainerGap())
                     .addGroup(change_passwordLayout.createSequentialGroup()
-                        .addComponent(jPasswordField6)
+                        .addComponent(new_pwd)
                         .addContainerGap())))
         );
         change_passwordLayout.setVerticalGroup(
@@ -1018,17 +1029,17 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addGap(29, 29, 29)
                 .addComponent(jLabel29)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(current_pwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel30)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(new_pwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel31)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPasswordField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(confirm_pwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(change_pwd, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1062,10 +1073,8 @@ public class Admin_panel extends javax.swing.JFrame {
 
         logout_panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jProgressBar1.setValue(50);
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Loginng out....");
+        logout_status.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        logout_status.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout logout_panelLayout = new javax.swing.GroupLayout(logout_panel);
         logout_panel.setLayout(logout_panelLayout);
@@ -1075,20 +1084,20 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addContainerGap(185, Short.MAX_VALUE)
                 .addGroup(logout_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logout_panelLayout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(logout_ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 550, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(157, 157, 157))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logout_panelLayout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(385, 385, 385))))
+                        .addComponent(logout_status, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(342, 342, 342))))
         );
         logout_panelLayout.setVerticalGroup(
             logout_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(logout_panelLayout.createSequentialGroup()
                 .addGap(278, 278, 278)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logout_ProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addContainerGap(302, Short.MAX_VALUE))
+                .addComponent(logout_status, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(299, Short.MAX_VALUE))
         );
 
         dynamic1.add(logout_panel, "card2");
@@ -1173,19 +1182,66 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.add(setting_panel);
         dynamic1.repaint();
         dynamic1.revalidate();
+        
+        //set user details to edi
+        set_data_to_edit();
     }//GEN-LAST:event_settingsMouseClicked
 
+    
+    private void exit(){
+        this.dispose();
+    }
+    
+    
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
         this.remove_selection();
         logout.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        
+        
+       int confirm_logout = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
+       if(confirm_logout==0){
+           
         dynamic1.removeAll();
         dynamic1.repaint();
         dynamic1.revalidate();
-
+        
         dynamic1.add(logout_panel);
         dynamic1.repaint();
         dynamic1.revalidate();
+        
+        
+        Thread t1 = new Thread(){
+        
+        public void run(){
+            logout_status.setText("Clear sessions...");
+            admin = null;
+            for (int i = 0; i < 40; i++) {
+                   logout_ProgressBar.setValue(i);
+                try {
+                    sleep(8);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Admin_panel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+             }
+            logout_status.setText("Logging out...");
+            for (int i = 41; i < 101; i++) {
+                   logout_ProgressBar.setValue(i);
+                try {
+                    sleep(9);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Admin_panel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+             }
+            
+            new InfinityComMain().setVisible(true);
+            exit();
+            
+            }
+        };
+        t1.start();
+        
+       }
     }//GEN-LAST:event_logoutMouseClicked
 
     private void default_selected() {
@@ -1218,6 +1274,7 @@ public class Admin_panel extends javax.swing.JFrame {
         
         reset_default_pwd.setEnabled(false);
         reset_default_pwd.setSelected(false);
+        remove_user.setEnabled(false);
         user_btn.setText("Add");
     }
 
@@ -1265,6 +1322,7 @@ public class Admin_panel extends javax.swing.JFrame {
 
                 reset_default_pwd.setSelected(false);
                 reset_default_pwd.setEnabled(true);
+                remove_user.setEnabled(true);
                 user_btn.setText("Save");
 
             }
@@ -1298,7 +1356,7 @@ public class Admin_panel extends javax.swing.JFrame {
 
     private void remove_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_userActionPerformed
         
-        int confirm_delete = JOptionPane.showConfirmDialog(null, "Are you sure want to reset default password?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int confirm_delete = JOptionPane.showConfirmDialog(null, "Are you sure want to reset delete this user?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         
          if(confirm_delete==0){
             this.admin.delete_user();
@@ -1315,6 +1373,71 @@ public class Admin_panel extends javax.swing.JFrame {
             user_table.setModel(DbUtils.resultSetToTableModel(res_users));
         }
     }
+    
+    
+    private void set_data_to_edit(){
+        
+        ResultSet user_details_res = this.admin.get_user_details_for_edit();
+        
+        try {
+            if (user_details_res.next()) {
+                edit_user_name.setText(user_details_res.getString("user_name"));
+                edit_user_email.setText(user_details_res.getString("user_email"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
+    private void save_user_detail_changesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_user_detail_changesActionPerformed
+        
+        String Uname = edit_user_name.getText();
+        String Uemail = edit_user_email.getText();
+        
+        this.admin.edit_user_details(Uname, Uemail);
+        
+        set_data_to_edit();
+    }//GEN-LAST:event_save_user_detail_changesActionPerformed
+
+    private void change_pwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_change_pwdActionPerformed
+        
+        ResultSet user_pwd_res = this.admin.get_pwd_to_change();
+        
+        try {
+            if(user_pwd_res.next()){
+                
+                String CurrentPWD = enc.encryptThis(current_pwd.getText());
+                String NewPWD = enc.encryptThis(new_pwd.getText());
+                String ConfirmPWD = enc.encryptThis(confirm_pwd.getText());
+                
+                if(user_pwd_res.getString("user_password").equals(CurrentPWD)){
+                
+                    if(NewPWD.equals(ConfirmPWD)){
+                        if(this.admin.change_pwd(NewPWD)){
+                            current_pwd.setText("");
+                            new_pwd.setText("");
+                            confirm_pwd.setText("");
+                        }
+                    }else{
+                         JOptionPane.showMessageDialog(null, "New password not valid.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(null, "Invalid current password.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_change_pwdActionPerformed
+
+    
+    
+   
+    
 
     /**
      * @param args the command line arguments
@@ -1370,25 +1493,27 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JTextField cat_name8;
     private javax.swing.JTextField cat_name9;
     private javax.swing.JPanel change_password;
+    private javax.swing.JButton change_pwd;
     private javax.swing.JButton clear_user_form;
+    private javax.swing.JPasswordField confirm_pwd;
+    private javax.swing.JPasswordField current_pwd;
     private javax.swing.JPanel dynamic1;
     private javax.swing.JPanel edit_profile;
+    private javax.swing.JTextField edit_user_email;
+    private javax.swing.JTextField edit_user_name;
     private javax.swing.JPanel header;
     private javax.swing.JLabel header_text;
     private javax.swing.JLabel inventory;
     private javax.swing.JPanel inventory_panel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -1420,26 +1545,24 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPasswordField jPasswordField5;
-    private javax.swing.JPasswordField jPasswordField6;
-    private javax.swing.JPasswordField jPasswordField7;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel logout;
+    private javax.swing.JProgressBar logout_ProgressBar;
     private javax.swing.JPanel logout_panel;
+    private javax.swing.JLabel logout_status;
     private javax.swing.JPanel main_panel;
     private javax.swing.JPanel menus;
     private javax.swing.JPanel menus_bg;
+    private javax.swing.JPasswordField new_pwd;
     private javax.swing.JButton remove_user;
     private javax.swing.JLabel reports;
     private javax.swing.JCheckBox reset_default_pwd;
+    private javax.swing.JButton save_user_detail_changes;
     private javax.swing.JPanel setting_panel;
     private javax.swing.JLabel settings;
     private javax.swing.JLabel theme;
