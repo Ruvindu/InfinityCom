@@ -543,6 +543,9 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="Clear form"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clear_user_formActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="remove_user">
                       <Properties>
@@ -551,6 +554,9 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="Remove"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="remove_userActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JCheckBox" name="reset_default_pwd">
                       <Properties>
@@ -559,6 +565,9 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="Reset default password"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reset_default_pwdActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel24">
                       <Properties>

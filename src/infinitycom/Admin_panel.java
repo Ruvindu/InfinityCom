@@ -1,36 +1,36 @@
-
 package infinitycom;
 
 import java.awt.Color;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 import users.Admin;
 
-
 public class Admin_panel extends javax.swing.JFrame {
 
     Admin admin;
-    
-    
+
     Encryption enc = Encryption.getEncryption();
-    
-    public Admin_panel(){
+
+    public Admin_panel() {
         initComponents();
     }
-    
+
     public Admin_panel(Admin user) {
         initComponents();
-        
+
         //initialize admin
         this.admin = user;
-        
+
         //Select users menu for first time login as the default
         default_selected();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -322,12 +322,27 @@ public class Admin_panel extends javax.swing.JFrame {
 
         clear_user_form.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         clear_user_form.setText("Clear form");
+        clear_user_form.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear_user_formActionPerformed(evt);
+            }
+        });
 
         remove_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         remove_user.setText("Remove");
+        remove_user.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove_userActionPerformed(evt);
+            }
+        });
 
         reset_default_pwd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         reset_default_pwd.setText("Reset default password");
+        reset_default_pwd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reset_default_pwdActionPerformed(evt);
+            }
+        });
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(153, 153, 153));
@@ -1108,15 +1123,15 @@ public class Admin_panel extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void remove_selection(){
+    private void remove_selection() {
         users.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         inventory.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         reports.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         settings.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         logout.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-        
+
     }
-    
+
     private void usersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersMouseClicked
         default_selected();
     }//GEN-LAST:event_usersMouseClicked
@@ -1124,7 +1139,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private void inventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventoryMouseClicked
         this.remove_selection();
         inventory.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        
+
         dynamic1.removeAll();
         dynamic1.repaint();
         dynamic1.revalidate();
@@ -1137,7 +1152,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
         this.remove_selection();
         reports.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        
+
         dynamic1.removeAll();
         dynamic1.repaint();
         dynamic1.revalidate();
@@ -1150,7 +1165,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
         this.remove_selection();
         settings.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        
+
         dynamic1.removeAll();
         dynamic1.repaint();
         dynamic1.revalidate();
@@ -1163,7 +1178,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
         this.remove_selection();
         logout.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        
+
         dynamic1.removeAll();
         dynamic1.repaint();
         dynamic1.revalidate();
@@ -1173,10 +1188,10 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.revalidate();
     }//GEN-LAST:event_logoutMouseClicked
 
-    private void default_selected(){
+    private void default_selected() {
         this.remove_selection();
         users.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        
+
         dynamic1.removeAll();
         dynamic1.repaint();
         dynamic1.revalidate();
@@ -1184,44 +1199,123 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.add(users_panel);
         dynamic1.repaint();
         dynamic1.revalidate();
-        
+
         //refresh table
         refresh_user_tbl();
+
+        // reafresh user form(
+        refresh_user_form();
     }
-    
-    
-    
-    private void user_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_btnActionPerformed
+
+    private void refresh_user_form() {
         
+        admin.setSelected_user(0);
+
+        user_type.setSelectedIndex(0);
+        user_name.setText("");
+        user_email.setText("");
+        user_pwd.setText("12345");
+        
+        reset_default_pwd.setEnabled(false);
+        reset_default_pwd.setSelected(false);
+        user_btn.setText("Add");
+    }
+
+
+    private void user_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_btnActionPerformed
+
         String UType = (String) user_type.getSelectedItem();
         String UName = user_name.getText();
         String UEmail = user_email.getText();
         String UPwd = enc.encryptThis(user_pwd.getText());
-        
-        this.admin.user_redirector(UType,UName,UEmail,UPwd);
-        
-        //refresh table
-        refresh_user_tbl();
+
+        if ((!"".equals(UName)) && (!"".equals(UEmail)) && (!"".equals(UPwd))) {
+            this.admin.user_redirector(UType, UName, UEmail, UPwd);
+
+            //refresh table
+            refresh_user_tbl();
+            refresh_user_form();
+        } else {
+            JOptionPane.showMessageDialog(null, "Fill all required fields.", "Message", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_user_btnActionPerformed
 
     private void user_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_user_tableMouseClicked
-        DefaultTableModel model = (DefaultTableModel)user_table.getModel();
+        DefaultTableModel model = (DefaultTableModel) user_table.getModel();
         int selected_row_index = user_table.getSelectedRow();
-        
+
         /*Get selected id*/
         String selected_id = model.getValueAt(selected_row_index, 0).toString();
-        
+
         this.admin.setSelected_user(Integer.parseInt(selected_id));
-        
+
+        try {
+            ResultSet selected_user_res = this.admin.get_selected_user();
+            if (selected_user_res.next()) {
+
+                if ("Admin".equals(selected_user_res.getString("role"))) {
+                    user_type.setSelectedIndex(1);
+                }
+                user_name.setText(selected_user_res.getString("user_name"));
+                user_email.setText(selected_user_res.getString("user_email"));
+                //user_pwd.setText(selected_user_res.getString("user_password"));
+                user_pwd.setText("");
+
+                reset_default_pwd.setSelected(false);
+                reset_default_pwd.setEnabled(true);
+                user_btn.setText("Save");
+
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_user_tableMouseClicked
 
+    private void clear_user_formActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_user_formActionPerformed
+        refresh_user_form();
+        refresh_user_tbl();
+    }//GEN-LAST:event_clear_user_formActionPerformed
 
-    public void refresh_user_tbl(){
+    private void reset_default_pwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_default_pwdActionPerformed
         
+        boolean reset_pwd = reset_default_pwd.isSelected();
+        
+        if(reset_pwd){
+            int reset_pwd_confirm = JOptionPane.showConfirmDialog(null, "Are you sure want to reset default password?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            
+            if(reset_pwd_confirm==0){
+                user_pwd.setText("12345");
+            }else{
+                reset_default_pwd.setSelected(false);
+                user_pwd.setText("");
+            }
+            
+        }
+    }//GEN-LAST:event_reset_default_pwdActionPerformed
+
+    private void remove_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_userActionPerformed
+        
+        int confirm_delete = JOptionPane.showConfirmDialog(null, "Are you sure want to reset default password?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+         if(confirm_delete==0){
+            this.admin.delete_user();
+            
+            refresh_user_form();
+            refresh_user_tbl();
+         }
+    }//GEN-LAST:event_remove_userActionPerformed
+
+    public void refresh_user_tbl() {
+
         ResultSet res_users = this.admin.get_all_users();
-        if(res_users!=null)user_table.setModel(DbUtils.resultSetToTableModel(res_users));
+        if (res_users != null) {
+            user_table.setModel(DbUtils.resultSetToTableModel(res_users));
+        }
     }
-    
+
     /**
      * @param args the command line arguments
      */
