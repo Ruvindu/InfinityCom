@@ -6,6 +6,7 @@ import infinitycom.DBConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,8 +19,9 @@ public class Admin implements Users{
     private String user_name;
     private String user_email;
     
-    //update user instans
+    // instans
     private int selected_user = 0;
+    private int selected_category = 0;
     
     Connection con;
     
@@ -56,6 +58,10 @@ public class Admin implements Users{
         this.selected_user = selected_user;
     }
 
+    public void setSelected_category(int selected_category) {
+        this.selected_category = selected_category;
+    }
+
    
     
   /*==============================================User management and configurations===========================================================================*/  
@@ -70,7 +76,7 @@ public class Admin implements Users{
         }       
     } 
     
-    public void add_user(String UType,String UName,String UEmail,String UPwd){
+    private void add_user(String UType,String UName,String UEmail,String UPwd){
         
         String addQ = "INSERT INTO `user`(`user_name`, `user_email`, `user_password`, `role`) VALUES ('"+UName+"','"+UEmail+"','"+UPwd+"','"+UType+"')";
         
@@ -88,7 +94,7 @@ public class Admin implements Users{
        }
     }
     
-    public void update_user(String UType,String UName,String UEmail,String UPwd){
+    private void update_user(String UType,String UName,String UEmail,String UPwd){
         
         String updateQ = "UPDATE `user` SET `user_name`='"+UName+"',`user_email`='"+UEmail+"',`role`='"+UType+"' WHERE `user_id` = "+this.selected_user+"";
         
@@ -264,6 +270,168 @@ public class Admin implements Users{
     }
     
      /*=========================================================================================================================================================*/
+    
+    
+    
+     /*======================================================================= Category ========================================================================*/
+    
+    
+     public ResultSet get_all_categories(){
+    
+        ResultSet res=null;
+        String selectcatQ = "SELECT `cat_id` as 'Category ID' , `cat_name` as 'Category name' FROM `category`";
+        
+        PreparedStatement qstate;
+        try {
+            
+            qstate = (PreparedStatement) con.prepareStatement(selectcatQ);      
+            res = qstate.executeQuery();
+            
+        } catch (Exception e) {
+           JOptionPane.showMessageDialog(null, e.getMessage() , "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return res;
+    }
+    
+    
+    public ResultSet get_selected_category(){
+    
+        ResultSet res=null;
+        String selectcatQ = "SELECT `cat_id`, `cat_name` FROM `category` WHERE `cat_id`="+this.selected_category+"";
+        
+        PreparedStatement qstate;
+        try {
+            
+            qstate = (PreparedStatement) con.prepareStatement(selectcatQ);      
+            res = qstate.executeQuery();
+            
+        } catch (Exception e) {
+           JOptionPane.showMessageDialog(null, e.getMessage() , "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return res;
+    }
+    
+     
+     public void category_redirector(String category_name){
+     
+         if(selected_category==0){
+             this.add_category(category_name);
+         }else{
+             this.update_category(category_name);
+         }
+     }
+     
+     private void add_category(String category_name){
+        
+        String addCatQ = "INSERT INTO `category`(`cat_name`) VALUES ('"+category_name+"')";
+        
+        PreparedStatement qstate;
+ 
+        try {
+           qstate = (PreparedStatement) con.prepareStatement(addCatQ);      
+           
+           /*Confirm and added one row*/
+           qstate.execute();
+           JOptionPane.showMessageDialog(null,"Successfully added one category.");
+        
+       } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage() , "Error", JOptionPane.ERROR_MESSAGE);
+       }
+     }
+     
+     private void update_category(String category_name){
+     
+        String updateCatQ = "UPDATE `category` SET `cat_name`='"+category_name+"' WHERE `cat_id` = "+this.selected_category+"";
+        
+        PreparedStatement qstate;
+ 
+        try {
+           qstate = (PreparedStatement) con.prepareStatement(updateCatQ);      
+           
+           /*Confirm and added one row*/
+           qstate.execute();
+           JOptionPane.showMessageDialog(null,"Successfully updated the category.");
+        
+       } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage() , "Error", JOptionPane.ERROR_MESSAGE);
+       }
+         
+     }
+     
+     public void delete_category(){
+     
+        String deleteCatQ = "DELETE FROM `category` WHERE `cat_id` = "+this.selected_category+"";
+        
+        PreparedStatement qstate;
+ 
+        try {
+           qstate = (PreparedStatement) con.prepareStatement(deleteCatQ);      
+           
+           /*Confirm and added one row*/
+           qstate.execute();
+           JOptionPane.showMessageDialog(null,"Successfully deleted the category.");
+        
+       } catch (SQLException ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage() , "Error", JOptionPane.ERROR_MESSAGE);
+       }
+         
+     }
+    
+     /*=========================================================================================================================================================*/
+
+
+
+     
+      /*=================================================== Inventory =====================================================================================*/
+
+     
+     public void add_inventory(int product_id, String product_category, String product_name, int qty, float stock_price, float selling_price, String date ){
+     
+        ResultSet res=null;
+        String get_product_catIDQ = "SELECT `cat_id` FROM `category` WHERE `cat_name` = '"+product_category+"'";
+        System.out.println(get_product_catIDQ);
+
+        PreparedStatement qstate;
+        try {
+            
+            qstate = (PreparedStatement) con.prepareStatement(get_product_catIDQ);      
+            res = qstate.executeQuery();
+            
+            if(res.next()){
+                
+                String add_invQ = "INSERT INTO `inventory`(`product_id`, `product_category`, `product_name`, `quantity`, `stock_price`, `selling_price`, `date`) VALUES ( "+product_id+", "+res.getString("cat_id")+", '"+product_name+"', "+qty+", "+stock_price+", "+selling_price+", '"+date+"')" ;
+                 
+
+                        try {
+                           qstate = (PreparedStatement) con.prepareStatement(add_invQ);      
+
+                           /*Confirm and added one row*/
+                           qstate.execute();
+                           JOptionPane.showMessageDialog(null,"Successfully added stock.");
+
+                       } catch (SQLException ex) {
+                           JOptionPane.showMessageDialog(null, ex.getMessage() , "Error", JOptionPane.ERROR_MESSAGE);
+                       }
+
+
+                        System.out.println(add_invQ);
+                    }
+
+            
+            
+        } catch (Exception e) {
+           JOptionPane.showMessageDialog(null, e.getMessage() , "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+      
+         
+     }
+     
+     
+
+      /*====================================================================================================================================================*/
 }
 
 
