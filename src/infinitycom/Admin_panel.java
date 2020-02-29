@@ -20,6 +20,8 @@ public class Admin_panel extends javax.swing.JFrame {
 
     Encryption enc = Encryption.getEncryption();
 
+    Update_stock update_stock = new Update_stock();
+    
     public Admin_panel() {
         initComponents();
     }
@@ -82,24 +84,9 @@ public class Admin_panel extends javax.swing.JFrame {
         categoty_table = new javax.swing.JTable();
         remove_cat = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        cat_name1 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        cat_name2 = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        edit_product_cat = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
-        cat_name3 = new javax.swing.JTextField();
-        cat_name4 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        cat_name5 = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        add_product_id = new javax.swing.JTextField();
+        add_stock_id = new javax.swing.JTextField();
         add_inv = new javax.swing.JButton();
         clear_add_inv = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
@@ -114,9 +101,9 @@ public class Admin_panel extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        inventory_table = new javax.swing.JTable();
+        stock_update = new javax.swing.JButton();
+        stock_remove = new javax.swing.JButton();
         setting_panel = new javax.swing.JPanel();
         edit_profile = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -623,117 +610,13 @@ public class Admin_panel extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(250, 250, 250));
 
-        jPanel6.setBackground(new java.awt.Color(250, 250, 250));
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Edit product", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Product ID");
-
-        cat_name1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        jButton9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton9.setText("Save");
-
-        jButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton10.setText("Clear");
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Product Name (optional)");
-
-        cat_name2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel10.setText("Product Catogory");
-
-        edit_product_cat.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel11.setText("Quantity");
-
-        cat_name3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        cat_name4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel12.setText("Stock price");
-
-        cat_name5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel13.setText("Selling price");
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(edit_product_cat, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cat_name5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cat_name4, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cat_name3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cat_name2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cat_name1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addGap(65, 65, 65)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(43, 43, 43))))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jLabel10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(edit_product_cat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cat_name1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cat_name2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cat_name3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cat_name4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cat_name5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
         jPanel7.setBackground(new java.awt.Color(250, 250, 250));
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add new products", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Add new stock", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel14.setText("Product ID");
+        jLabel14.setText("Stock ID");
 
-        add_product_id.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add_stock_id.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         add_inv.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         add_inv.setText("Add");
@@ -795,7 +678,7 @@ public class Admin_panel extends javax.swing.JFrame {
                             .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(add_qty, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(add_product_name, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(add_product_id, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(add_stock_id, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
@@ -817,7 +700,7 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add_product_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(add_stock_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel15)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -848,26 +731,22 @@ public class Admin_panel extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addContainerGap(431, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        tabs.addTab(" Add and Edit Products ", jPanel2);
+        tabs.addTab(" Add new Stock", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(250, 250, 250));
 
-        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        inventory_table.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        inventory_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -878,15 +757,25 @@ public class Admin_panel extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setGridColor(new java.awt.Color(204, 204, 204));
-        jTable1.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        jScrollPane2.setViewportView(jTable1);
+        inventory_table.setGridColor(new java.awt.Color(204, 204, 204));
+        inventory_table.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        inventory_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                inventory_tableMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(inventory_table);
 
-        jButton5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton5.setText("Edit");
+        stock_update.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        stock_update.setText("Update");
+        stock_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stock_updateActionPerformed(evt);
+            }
+        });
 
-        jButton6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton6.setText("Remove");
+        stock_remove.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        stock_remove.setText("Remove");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -895,12 +784,12 @@ public class Admin_panel extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 791, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(stock_update, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(stock_remove, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -910,8 +799,8 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
+                    .addComponent(stock_update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(stock_remove, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1193,11 +1082,14 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.add(inventory_panel);
         dynamic1.repaint();
         dynamic1.revalidate();
-        
+
         //refresh category form, category table
         refresh_cat_form();
         refresh_cat_tbl();
         refresh_inv_add_form();
+        refresh_inventory_tbl();
+      
+        
     }//GEN-LAST:event_inventoryMouseClicked
 
     private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
@@ -1224,66 +1116,63 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.add(setting_panel);
         dynamic1.repaint();
         dynamic1.revalidate();
-        
+
         //set user details to edi
         set_data_to_edit();
     }//GEN-LAST:event_settingsMouseClicked
 
-    
-    private void exit(){
+    private void exit() {
         this.dispose();
     }
-    
-    
+
+
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
         this.remove_selection();
         logout.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        
-        
-       int confirm_logout = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-       if(confirm_logout==0){
-           
-        dynamic1.removeAll();
-        dynamic1.repaint();
-        dynamic1.revalidate();
-        
-        dynamic1.add(logout_panel);
-        dynamic1.repaint();
-        dynamic1.revalidate();
-        
-        
-        Thread t1 = new Thread(){
-        
-        public void run(){
-            logout_status.setText("Clear sessions...");
-            admin = null;
-            for (int i = 0; i < 40; i++) {
-                   logout_ProgressBar.setValue(i);
-                try {
-                    sleep(8);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Admin_panel.class.getName()).log(Level.SEVERE, null, ex);
+        int confirm_logout = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (confirm_logout == 0) {
+
+            dynamic1.removeAll();
+            dynamic1.repaint();
+            dynamic1.revalidate();
+
+            dynamic1.add(logout_panel);
+            dynamic1.repaint();
+            dynamic1.revalidate();
+
+            Thread t1 = new Thread() {
+
+                public void run() {
+                    logout_status.setText("Clear sessions...");
+                    admin = null;
+                    for (int i = 0; i < 40; i++) {
+                        logout_ProgressBar.setValue(i);
+                        try {
+                            sleep(8);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Admin_panel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    logout_status.setText("Logging out...");
+                    for (int i = 41; i < 101; i++) {
+                        logout_ProgressBar.setValue(i);
+                        try {
+                            sleep(9);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Admin_panel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+
+                    new InfinityComMain().setVisible(true);
+                    exit();
+
                 }
-             }
-            logout_status.setText("Logging out...");
-            for (int i = 41; i < 101; i++) {
-                   logout_ProgressBar.setValue(i);
-                try {
-                    sleep(9);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Admin_panel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-             }
-            
-            new InfinityComMain().setVisible(true);
-            exit();
-            
-            }
-        };
-        t1.start();
-        
-       }
+            };
+            t1.start();
+
+        }
     }//GEN-LAST:event_logoutMouseClicked
 
     private void default_selected() {
@@ -1306,14 +1195,14 @@ public class Admin_panel extends javax.swing.JFrame {
     }
 
     private void refresh_user_form() {
-        
+
         admin.setSelected_user(0);
 
         user_type.setSelectedIndex(0);
         user_name.setText("");
         user_email.setText("");
         user_pwd.setText("12345");
-        
+
         reset_default_pwd.setEnabled(false);
         reset_default_pwd.setSelected(false);
         remove_user.setEnabled(false);
@@ -1380,32 +1269,32 @@ public class Admin_panel extends javax.swing.JFrame {
     }//GEN-LAST:event_clear_user_formActionPerformed
 
     private void reset_default_pwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_default_pwdActionPerformed
-        
+
         boolean reset_pwd = reset_default_pwd.isSelected();
-        
-        if(reset_pwd){
+
+        if (reset_pwd) {
             int reset_pwd_confirm = JOptionPane.showConfirmDialog(null, "Are you sure want to reset default password?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            
-            if(reset_pwd_confirm==0){
+
+            if (reset_pwd_confirm == 0) {
                 user_pwd.setText("12345");
-            }else{
+            } else {
                 reset_default_pwd.setSelected(false);
                 user_pwd.setText("");
             }
-            
+
         }
     }//GEN-LAST:event_reset_default_pwdActionPerformed
 
     private void remove_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_userActionPerformed
-        
+
         int confirm_delete = JOptionPane.showConfirmDialog(null, "Are you sure want to reset delete this user?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        
-         if(confirm_delete==0){
+
+        if (confirm_delete == 0) {
             this.admin.delete_user();
-            
+
             refresh_user_form();
             refresh_user_tbl();
-         }
+        }
     }//GEN-LAST:event_remove_userActionPerformed
 
     public void refresh_user_tbl() {
@@ -1415,12 +1304,11 @@ public class Admin_panel extends javax.swing.JFrame {
             user_table.setModel(DbUtils.resultSetToTableModel(res_users));
         }
     }
-    
-    
-    private void set_data_to_edit(){
-        
+
+    private void set_data_to_edit() {
+
         ResultSet user_details_res = this.admin.get_user_details_for_edit();
-        
+
         try {
             if (user_details_res.next()) {
                 edit_user_name.setText(user_details_res.getString("user_name"));
@@ -1430,76 +1318,74 @@ public class Admin_panel extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    
+
+
     private void save_user_detail_changesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_user_detail_changesActionPerformed
-        
+
         String Uname = edit_user_name.getText();
         String Uemail = edit_user_email.getText();
-        
+
         this.admin.edit_user_details(Uname, Uemail);
-        
+
         set_data_to_edit();
     }//GEN-LAST:event_save_user_detail_changesActionPerformed
 
     private void change_pwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_change_pwdActionPerformed
-        
+
         ResultSet user_pwd_res = this.admin.get_pwd_to_change();
-        
+
         try {
-            if(user_pwd_res.next()){
-                
+            if (user_pwd_res.next()) {
+
                 String CurrentPWD = enc.encryptThis(current_pwd.getText());
                 String NewPWD = enc.encryptThis(new_pwd.getText());
                 String ConfirmPWD = enc.encryptThis(confirm_pwd.getText());
-                
-                if(user_pwd_res.getString("user_password").equals(CurrentPWD)){
-                
-                    if(NewPWD.equals(ConfirmPWD)){
-                        if(this.admin.change_pwd(NewPWD)){
+
+                if (user_pwd_res.getString("user_password").equals(CurrentPWD)) {
+
+                    if (NewPWD.equals(ConfirmPWD)) {
+                        if (this.admin.change_pwd(NewPWD)) {
                             current_pwd.setText("");
                             new_pwd.setText("");
                             confirm_pwd.setText("");
                         }
-                    }else{
-                         JOptionPane.showMessageDialog(null, "New password not valid.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "New password not valid.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Invalid current password.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                
-                
+
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_change_pwdActionPerformed
 
-    
-    
+
     private void cat_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cat_btnActionPerformed
-        
+
         String category_name = cat_name.getText();
-        
-        if(!"".equals(category_name)){
-            
+
+        if (!"".equals(category_name)) {
+
             this.admin.category_redirector(category_name);
-            
+
             //refresh category form, category table
             refresh_cat_form();
             refresh_cat_tbl();
-            
+
             refresh_inv_add_form();
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "No enterd category name.", "Message", JOptionPane.INFORMATION_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_cat_btnActionPerformed
 
     private void categoty_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_categoty_tableMouseClicked
-        
+
         DefaultTableModel model = (DefaultTableModel) categoty_table.getModel();
         int selected_row_index = categoty_table.getSelectedRow();
 
@@ -1511,40 +1397,39 @@ public class Admin_panel extends javax.swing.JFrame {
         try {
             ResultSet selected_cat_res = this.admin.get_selected_category();
             if (selected_cat_res.next()) {
-                
+
                 cat_name.setText(selected_cat_res.getString("cat_name"));
-               
-                remove_cat.setEnabled(true); 
+
+                remove_cat.setEnabled(true);
                 cat_btn.setText("Save");
 
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_categoty_tableMouseClicked
 
     private void clear_cat_formActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_cat_formActionPerformed
         //refresh category form, category table
-            refresh_cat_form();
-            refresh_cat_tbl();
+        refresh_cat_form();
+        refresh_cat_tbl();
     }//GEN-LAST:event_clear_cat_formActionPerformed
 
     private void remove_catActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_catActionPerformed
-        
+
         this.admin.delete_category();
-        
+
         //refresh category form, category table
-            refresh_cat_form();
-            refresh_cat_tbl();
-        
+        refresh_cat_form();
+        refresh_cat_tbl();
+
     }//GEN-LAST:event_remove_catActionPerformed
 
     private void tabsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabsMouseClicked
-       
-        
+
         //refresh category form, category table
-          /*  refresh_cat_form();
+        /*  refresh_cat_form();
             refresh_cat_tbl();
             
             refresh_inv_add_form();*/
@@ -1556,74 +1441,112 @@ public class Admin_panel extends javax.swing.JFrame {
     }//GEN-LAST:event_clear_add_invActionPerformed
 
     private void add_invActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_invActionPerformed
-       
-        try{
 
-            int product_id = Integer.parseInt(add_product_id.getText());
+        try {
+
+            int product_id = Integer.parseInt(add_stock_id.getText());
             String product_category = (String) add_product_cat.getSelectedItem();
             String product_name = add_product_name.getText();
             int qty = Integer.parseInt(add_qty.getText());
             float stock_price = Float.parseFloat(add_stock_price.getText());
             float selling_price = Float.parseFloat(add_selling_price.getText());
-            
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
-            Date date = new Date();  
-            String d = formatter.format(date); 
-           
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            String d = formatter.format(date);
+
             this.admin.add_inventory(product_id, product_category, product_name, qty, stock_price, selling_price, d);
-            
-        }catch(Exception e){
+            refresh_inventory_tbl();
+
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-         
-   
+
+
     }//GEN-LAST:event_add_invActionPerformed
 
-    
-    private void refresh_inv_add_form(){
+    private void inventory_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_inventory_tableMouseClicked
         
-        ResultSet all_cat = this.admin.get_all_categories();
         
+        DefaultTableModel model = (DefaultTableModel) inventory_table.getModel();
+        int selected_row_index = inventory_table.getSelectedRow();
+
+        /*Get selected id*/
+        String selected_id = model.getValueAt(selected_row_index, 0).toString();
+        //System.out.println(selected_id);
+        this.admin.setSelected_stock(Integer.parseInt(selected_id));
+
         try {
-            add_product_cat.removeAllItems();
-            while(all_cat.next()){       
-                add_product_cat.addItem(all_cat.getString("Category name"));        
+            ResultSet selected_stock_res = this.admin.get_selected_stock();
+            if (selected_stock_res.next()) {
+
+                update_stock.set_update_stock_form(selected_stock_res.getString("product_category"), selected_stock_res.getString("stock_id"), selected_stock_res.getString("product_name"), selected_stock_res.getString("quantity"),selected_stock_res.getString("stock_price") , selected_stock_res.getString("selling_price") );
+
+                stock_update.setEnabled(true);
+                stock_remove.setEnabled(true);
+
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         
-        add_product_id.setText("");
-        add_product_name.setText(""); 
+       
+    }//GEN-LAST:event_inventory_tableMouseClicked
+
+    private void stock_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stock_updateActionPerformed
+        
+        update_stock.setVisible(true);
+        
+    }//GEN-LAST:event_stock_updateActionPerformed
+
+    private void refresh_inv_add_form() {
+
+        ResultSet all_cat = this.admin.get_all_categories();
+
+        try {
+            add_product_cat.removeAllItems();
+            while (all_cat.next()) {
+                add_product_cat.addItem(all_cat.getString("Category name"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        add_stock_id.setText("");
+        add_product_name.setText("");
         add_qty.setText("");
         add_stock_price.setText("");
         add_selling_price.setText("");
-        
-        
+
+    }
+
+    private void refresh_inventory_tbl() {
+
+        ResultSet res_stocks = this.admin.get_all_stocks();
+        if (res_stocks != null) {
+            inventory_table.setModel(DbUtils.resultSetToTableModel(res_stocks));
+        }
     }
     
-    
-    
-    
-    private void refresh_cat_form(){
-    
+   
+
+    private void refresh_cat_form() {
+
         admin.setSelected_category(0);
-        
+
         cat_name.setText("");
         cat_btn.setText("Add");
         remove_cat.setEnabled(false);
-        
+
     }
-    
-    private void refresh_cat_tbl(){
-    
+
+    private void refresh_cat_tbl() {
+
         ResultSet res_cats = this.admin.get_all_categories();
         if (res_cats != null) {
             categoty_table.setModel(DbUtils.resultSetToTableModel(res_cats));
         }
     }
-   
-    
 
     /**
      * @param args the command line arguments
@@ -1666,19 +1589,14 @@ public class Admin_panel extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_inv;
     private javax.swing.JComboBox<String> add_product_cat;
-    private javax.swing.JTextField add_product_id;
     private javax.swing.JTextField add_product_name;
     private javax.swing.JTextField add_qty;
     private javax.swing.JTextField add_selling_price;
+    private javax.swing.JTextField add_stock_id;
     private javax.swing.JTextField add_stock_price;
     private javax.swing.JPanel barcode_config;
     private javax.swing.JButton cat_btn;
     private javax.swing.JTextField cat_name;
-    private javax.swing.JTextField cat_name1;
-    private javax.swing.JTextField cat_name2;
-    private javax.swing.JTextField cat_name3;
-    private javax.swing.JTextField cat_name4;
-    private javax.swing.JTextField cat_name5;
     private javax.swing.JTable categoty_table;
     private javax.swing.JPanel change_password;
     private javax.swing.JButton change_pwd;
@@ -1688,7 +1606,6 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPasswordField confirm_pwd;
     private javax.swing.JPasswordField current_pwd;
     private javax.swing.JPanel dynamic1;
-    private javax.swing.JComboBox<String> edit_product_cat;
     private javax.swing.JPanel edit_profile;
     private javax.swing.JTextField edit_user_email;
     private javax.swing.JTextField edit_user_name;
@@ -1696,14 +1613,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JLabel header_text;
     private javax.swing.JLabel inventory;
     private javax.swing.JPanel inventory_panel;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
+    private javax.swing.JTable inventory_table;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -1721,20 +1631,16 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel logout;
     private javax.swing.JProgressBar logout_ProgressBar;
     private javax.swing.JPanel logout_panel;
@@ -1750,6 +1656,8 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JButton save_user_detail_changes;
     private javax.swing.JPanel setting_panel;
     private javax.swing.JLabel settings;
+    private javax.swing.JButton stock_remove;
+    private javax.swing.JButton stock_update;
     private javax.swing.JTabbedPane tabs;
     private javax.swing.JLabel theme;
     private javax.swing.JButton user_btn;
