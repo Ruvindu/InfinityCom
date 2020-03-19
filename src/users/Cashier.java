@@ -121,4 +121,32 @@ public class Cashier implements Users {
     }
 
     /*=========================================================================================================================================================*/
+    
+    
+    /*============================================================== dashboard config ========================================================================*/
+    
+    public ResultSet get_more_details_for_fill_billing_form(int stock_id){
+    
+        ResultSet stock_details = null;
+        
+        String selectusersQ = "SELECT * FROM `inventory` WHERE `stock_id`= " + stock_id + "";
+
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(selectusersQ);
+            stock_details = qstate.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        
+        return stock_details;
+    }
+    
+    
+    /*=========================================================================================================================================================*/
+    
+    
 }

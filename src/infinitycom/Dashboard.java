@@ -2,12 +2,14 @@
 package infinitycom;
 
 import java.awt.Color;
+import static java.lang.Thread.sleep;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import users.Cashier;
 
 /**
@@ -19,9 +21,11 @@ public class Dashboard extends javax.swing.JFrame {
     Cashier cashier;
     
     Encryption enc = Encryption.getEncryption();
+    ResultSet selling_stock_details;
     
     public Dashboard() {
         initComponents();
+        
     }
 
     Dashboard(Cashier user) {
@@ -29,6 +33,8 @@ public class Dashboard extends javax.swing.JFrame {
         
        //initialize cashier
         this.cashier = user;
+        
+        default_selected();
     }
 
   
@@ -41,13 +47,32 @@ public class Dashboard extends javax.swing.JFrame {
         menus = new javax.swing.JPanel();
         dashboard = new javax.swing.JLabel();
         settings = new javax.swing.JLabel();
-        logout = new javax.swing.JLabel();
+        returns = new javax.swing.JLabel();
         theme = new javax.swing.JLabel();
+        logout = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
         header_text = new javax.swing.JLabel();
         dynamic1 = new javax.swing.JPanel();
         dashboard_panel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        p_name = new javax.swing.JTextField();
+        p_qty = new javax.swing.JTextField();
+        p_id = new javax.swing.JTextField();
+        p_price = new javax.swing.JTextField();
+        p_discount = new javax.swing.JTextField();
+        add_to_list = new javax.swing.JButton();
+        print_bill = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        p_total = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        remove_list = new javax.swing.JButton();
+        clear_all = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        p_list = new javax.swing.JTable();
         setting_panel = new javax.swing.JPanel();
         edit_profile = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -67,6 +92,8 @@ public class Dashboard extends javax.swing.JFrame {
         logout_panel = new javax.swing.JPanel();
         logout_ProgressBar = new javax.swing.JProgressBar();
         logout_status = new javax.swing.JLabel();
+        returns_panel = new javax.swing.JPanel();
+        logout_status1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dashboard");
@@ -77,7 +104,7 @@ public class Dashboard extends javax.swing.JFrame {
         menus.setBackground(new java.awt.Color(255, 255, 255));
 
         dashboard.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
-        dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/infinitycom/user_male_circle_64px.png"))); // NOI18N
+        dashboard.setIcon(new javax.swing.ImageIcon(getClass().getResource("/infinitycom/dashboard.png"))); // NOI18N
         dashboard.setText("Dashboard");
         dashboard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         dashboard.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -98,6 +125,19 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
+        returns.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        returns.setIcon(new javax.swing.ImageIcon(getClass().getResource("/infinitycom/return_64px copy.png"))); // NOI18N
+        returns.setText(" Returns");
+        returns.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        returns.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        returns.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                returnsMouseClicked(evt);
+            }
+        });
+
+        theme.setIcon(new javax.swing.ImageIcon(getClass().getResource("/infinitycom/theme copy.png"))); // NOI18N
+
         logout.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/infinitycom/logout_rounded_64px.png"))); // NOI18N
         logout.setText(" Log out");
@@ -109,20 +149,19 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        theme.setIcon(new javax.swing.ImageIcon(getClass().getResource("/infinitycom/theme copy.png"))); // NOI18N
-
         javax.swing.GroupLayout menusLayout = new javax.swing.GroupLayout(menus);
         menus.setLayout(menusLayout);
         menusLayout.setHorizontalGroup(
             menusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(theme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(menusLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(menusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dashboard, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(settings, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(logout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(returns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(theme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         menusLayout.setVerticalGroup(
             menusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,8 +171,10 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(settings)
                 .addGap(18, 18, 18)
+                .addComponent(returns, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(logout, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(173, 173, 173)
+                .addGap(97, 97, 97)
                 .addComponent(theme, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -189,23 +230,152 @@ public class Dashboard extends javax.swing.JFrame {
 
         dashboard_panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setText("Dashboard");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Product ID");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Product name");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel4.setText("Quantity");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("Selling Price (1)");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel6.setText("Discount (%)");
+
+        p_id.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                p_idKeyReleased(evt);
+            }
+        });
+
+        add_to_list.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add_to_list.setText("Add to list");
+        add_to_list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_to_listActionPerformed(evt);
+            }
+        });
+
+        print_bill.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        print_bill.setText("Print bill");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel8.setText("Total price");
+
+        p_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        p_total.setText("00.00");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setText("RS.");
+
+        remove_list.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        remove_list.setText("Remove from list");
+
+        clear_all.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clear_all.setText("Clear all");
+
+        p_list.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Product ID", "Product name", "Quantity", "Discount", "Net Price"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(p_list);
 
         javax.swing.GroupLayout dashboard_panelLayout = new javax.swing.GroupLayout(dashboard_panel);
         dashboard_panel.setLayout(dashboard_panelLayout);
         dashboard_panelLayout.setHorizontalGroup(
             dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashboard_panelLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jLabel1)
-                .addContainerGap(785, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(add_to_list, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(dashboard_panelLayout.createSequentialGroup()
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(p_id, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(p_qty, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(p_name, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(p_price, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(p_discount, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(37, 37, 37)
+                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(dashboard_panelLayout.createSequentialGroup()
+                        .addComponent(remove_list, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(clear_all, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(print_bill, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dashboard_panelLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(p_total, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         dashboard_panelLayout.setVerticalGroup(
             dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashboard_panelLayout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jLabel1)
-                .addContainerGap(587, Short.MAX_VALUE))
+                .addGap(72, 72, 72)
+                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(dashboard_panelLayout.createSequentialGroup()
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(p_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(p_name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(p_qty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(p_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(p_discount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addComponent(add_to_list, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(28, 28, 28)
+                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(p_total)
+                    .addComponent(jLabel10))
+                .addGap(45, 45, 45)
+                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(print_bill, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(remove_list, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clear_all, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(184, Short.MAX_VALUE))
         );
 
         dynamic1.add(dashboard_panel, "card2");
@@ -413,6 +583,31 @@ public class Dashboard extends javax.swing.JFrame {
 
         dynamic1.add(logout_panel, "card2");
 
+        returns_panel.setBackground(new java.awt.Color(255, 255, 255));
+
+        logout_status1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        logout_status1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logout_status1.setText("returns");
+
+        javax.swing.GroupLayout returns_panelLayout = new javax.swing.GroupLayout(returns_panel);
+        returns_panel.setLayout(returns_panelLayout);
+        returns_panelLayout.setHorizontalGroup(
+            returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(returns_panelLayout.createSequentialGroup()
+                .addContainerGap(365, Short.MAX_VALUE)
+                .addComponent(logout_status1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(342, 342, 342))
+        );
+        returns_panelLayout.setVerticalGroup(
+            returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(returns_panelLayout.createSequentialGroup()
+                .addGap(322, 322, 322)
+                .addComponent(logout_status1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(299, Short.MAX_VALUE))
+        );
+
+        dynamic1.add(returns_panel, "card2");
+
         javax.swing.GroupLayout main_panelLayout = new javax.swing.GroupLayout(main_panel);
         main_panel.setLayout(main_panelLayout);
         main_panelLayout.setHorizontalGroup(
@@ -425,7 +620,7 @@ public class Dashboard extends javax.swing.JFrame {
         main_panelLayout.setVerticalGroup(
             main_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(menus_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(dynamic1, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(dynamic1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -459,8 +654,8 @@ public class Dashboard extends javax.swing.JFrame {
      private void remove_selection() {
         dashboard.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         settings.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        returns.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         logout.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-
     }
      
     private void exit() {
@@ -502,7 +697,90 @@ public class Dashboard extends javax.swing.JFrame {
        set_data_to_edit();
     }//GEN-LAST:event_settingsMouseClicked
 
+    private void returnsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnsMouseClicked
+        this.remove_selection();
+        returns.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+
+        dynamic1.removeAll();
+        dynamic1.repaint();
+        dynamic1.revalidate();
+
+        dynamic1.add(returns_panel);
+        dynamic1.repaint();
+        dynamic1.revalidate();
+    }//GEN-LAST:event_returnsMouseClicked
+
+    private void change_pwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_change_pwdActionPerformed
+
+        ResultSet user_pwd_res = this.cashier.get_pwd_to_change();
+
+        try {
+            if (user_pwd_res.next()) {
+
+                String CurrentPWD = enc.encryptThis(current_pwd.getText());
+                String NewPWD = enc.encryptThis(new_pwd.getText());
+                String ConfirmPWD = enc.encryptThis(confirm_pwd.getText());
+
+                if (user_pwd_res.getString("user_password").equals(CurrentPWD)) {
+
+                    if (NewPWD.equals(ConfirmPWD)) {
+                        if (this.cashier.change_pwd(NewPWD)) {
+                            current_pwd.setText("");
+                            new_pwd.setText("");
+                            confirm_pwd.setText("");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "New password not valid.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid current password.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_change_pwdActionPerformed
+
+    private void save_user_detail_changesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_user_detail_changesActionPerformed
+
+        String Uname = edit_user_name.getText();
+        String Uemail = edit_user_email.getText();
+
+        this.cashier.edit_user_details(Uname, Uemail);
+
+        set_data_to_edit();
+    }//GEN-LAST:event_save_user_detail_changesActionPerformed
+
+    private void p_idKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_p_idKeyReleased
+      
+        int get_p_id = Integer.parseInt(p_id.getText());
+        
+        //get available stock data
+        
+        this.selling_stock_details = cashier.get_more_details_for_fill_billing_form(get_p_id);
+        
+        try {
+            if(selling_stock_details.next()){
+                
+                p_name.setText(selling_stock_details.getString("product_name"));
+                p_price.setText(selling_stock_details.getString("selling_price"));
+                p_qty.setText("1");
+                p_discount.setText("0");
+                        
+            }else{
+                p_name.setText("");
+                p_price.setText("");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }//GEN-LAST:event_p_idKeyReleased
+
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        
         this.remove_selection();
         logout.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 
@@ -549,50 +827,33 @@ public class Dashboard extends javax.swing.JFrame {
             t1.start();
 
         }
+        
     }//GEN-LAST:event_logoutMouseClicked
 
-    private void change_pwdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_change_pwdActionPerformed
+    private void add_to_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_to_listActionPerformed
+        
+        String str_pid = p_id.getText();
+        String str_pname = p_name.getText();
+        String str_pqty = p_qty.getText();
+        String str_pprice = p_price.getText();
+        String str_pdiscount = p_discount.getText();
+        
+        
+    }//GEN-LAST:event_add_to_listActionPerformed
 
-        ResultSet user_pwd_res = this.cashier.get_pwd_to_change();
+    
+    private void init_list_table(){
+    
+    
+        DefaultTableModel model = (DefaultTableModel) p_list.getModel();
+        int selected_row_index = p_list.getSelectedRow();
 
-        try {
-            if (user_pwd_res.next()) {
-
-                String CurrentPWD = enc.encryptThis(current_pwd.getText());
-                String NewPWD = enc.encryptThis(new_pwd.getText());
-                String ConfirmPWD = enc.encryptThis(confirm_pwd.getText());
-
-                if (user_pwd_res.getString("user_password").equals(CurrentPWD)) {
-
-                    if (NewPWD.equals(ConfirmPWD)) {
-                        if (this.cashier.change_pwd(NewPWD)) {
-                            current_pwd.setText("");
-                            new_pwd.setText("");
-                            confirm_pwd.setText("");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "New password not valid.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Invalid current password.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-            }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }//GEN-LAST:event_change_pwdActionPerformed
-
-    private void save_user_detail_changesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_user_detail_changesActionPerformed
-
-        String Uname = edit_user_name.getText();
-        String Uemail = edit_user_email.getText();
-
-        this.cashier.edit_user_details(Uname, Uemail);
-
-        set_data_to_edit();
-    }//GEN-LAST:event_save_user_detail_changesActionPerformed
-
+        /*Get selected id*/
+        String selected_id = model.getValueAt(selected_row_index, 0).toString();
+        //System.out.println(selected_id);
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -629,9 +890,11 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton add_to_list;
     private javax.swing.JPanel barcode_config;
     private javax.swing.JPanel change_password;
     private javax.swing.JButton change_pwd;
+    private javax.swing.JButton clear_all;
     private javax.swing.JPasswordField confirm_pwd;
     private javax.swing.JPasswordField current_pwd;
     private javax.swing.JLabel dashboard;
@@ -643,19 +906,38 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel header;
     private javax.swing.JLabel header_text;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel29;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel logout;
     private javax.swing.JProgressBar logout_ProgressBar;
     private javax.swing.JPanel logout_panel;
     private javax.swing.JLabel logout_status;
+    private javax.swing.JLabel logout_status1;
     private javax.swing.JPanel main_panel;
     private javax.swing.JPanel menus;
     private javax.swing.JPanel menus_bg;
     private javax.swing.JPasswordField new_pwd;
+    private javax.swing.JTextField p_discount;
+    private javax.swing.JTextField p_id;
+    private javax.swing.JTable p_list;
+    private javax.swing.JTextField p_name;
+    private javax.swing.JTextField p_price;
+    private javax.swing.JTextField p_qty;
+    private javax.swing.JLabel p_total;
+    private javax.swing.JButton print_bill;
+    private javax.swing.JButton remove_list;
+    private javax.swing.JLabel returns;
+    private javax.swing.JPanel returns_panel;
     private javax.swing.JButton save_user_detail_changes;
     private javax.swing.JPanel setting_panel;
     private javax.swing.JLabel settings;
