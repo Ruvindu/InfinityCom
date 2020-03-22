@@ -5,6 +5,7 @@ import java.awt.Color;
 import static java.lang.Thread.sleep;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
@@ -22,6 +23,7 @@ public class Dashboard extends javax.swing.JFrame {
     
     Encryption enc = Encryption.getEncryption();
     ResultSet selling_stock_details;
+    int selected_item_for_remove;
     
     public Dashboard() {
         initComponents();
@@ -35,6 +37,9 @@ public class Dashboard extends javax.swing.JFrame {
         this.cashier = user;
         
         default_selected();
+        
+        remove_list.setEnabled(false);
+        
     }
 
   
@@ -273,16 +278,18 @@ public class Dashboard extends javax.swing.JFrame {
 
         remove_list.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         remove_list.setText("Remove from list");
+        remove_list.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove_listActionPerformed(evt);
+            }
+        });
 
         clear_all.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         clear_all.setText("Clear all");
 
         p_list.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Product ID", "Product name", "Quantity", "Discount", "Net Price"
@@ -294,6 +301,11 @@ public class Dashboard extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        p_list.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                p_listMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(p_list);
@@ -754,13 +766,13 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void p_idKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_p_idKeyReleased
       
-        int get_p_id = Integer.parseInt(p_id.getText());
-        
-        //get available stock data
-        
-        this.selling_stock_details = cashier.get_more_details_for_fill_billing_form(get_p_id);
-        
         try {
+            int get_p_id = Integer.parseInt(p_id.getText());
+        
+            //get available stock data
+        
+            this.selling_stock_details = cashier.get_more_details_for_fill_billing_form(get_p_id);
+        
             if(selling_stock_details.next()){
                 
                 p_name.setText(selling_stock_details.getString("product_name"));
@@ -835,14 +847,76 @@ public class Dashboard extends javax.swing.JFrame {
         String str_pid = p_id.getText();
         String str_pname = p_name.getText();
         String str_pqty = p_qty.getText();
-        String str_pprice = p_price.getText();
+        String str_pgrossprice = p_price.getText();
         String str_pdiscount = p_discount.getText();
         
+        try {
+            
+            //int int_pid = Integer.parseInt(str_pid);
+            int int_qty = Integer.parseInt(str_pqty);
+            float float_pgrossprice = Float.parseFloat(str_pgrossprice);
+            float float_pdiscount = Float.parseFloat(str_pdiscount);
+            
+            float net_price;
+            if(float_pdiscount>0){
+                net_price = (float_pgrossprice*int_qty)-((float_pgrossprice*int_qty)*(float_pdiscount/100));
+            }else{
+                net_price = (float_pgrossprice*int_qty);
+            }
+            
+             DecimalFormat decimalFormat = new DecimalFormat("#.00");
+             String str_net_price = decimalFormat.format(net_price);
         
+             String data[] = {str_pid,str_pname,Integer.toString(int_qty),Float.toString(float_pdiscount) + "%",str_net_price};
+                
+                DefaultTableModel model = (DefaultTableModel) p_list.getModel();
+                model.addRow(data);
+                
+                fresh_dashboard_form();
+                
+            } catch (Exception e) {
+            }
+      
+        
+      
     }//GEN-LAST:event_add_to_listActionPerformed
 
+    private void p_listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_listMouseClicked
+        
+        remove_list.setEnabled(true);
+       
+    }//GEN-LAST:event_p_listMouseClicked
+
+    private void remove_listActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_listActionPerformed
+        
+        DefaultTableModel model = (DefaultTableModel) p_list.getModel();
+        
+        try {
+            int selected_row_index = p_list.getSelectedRow();
+
+            /*Get selected id*/
+            model.removeRow(selected_row_index);
+        
+            remove_list.setEnabled(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No selected rows.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_remove_listActionPerformed
+
     
-    private void init_list_table(){
+    private void fresh_dashboard_form(){
+    
+        p_id.setText("");
+        p_name.setText("");
+        p_qty.setText("");
+        p_discount.setText("");
+        p_price.setText("");
+        
+    }
+    
+    
+    private void fresh_list_table(){
     
     
         DefaultTableModel model = (DefaultTableModel) p_list.getModel();
