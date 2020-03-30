@@ -145,6 +145,101 @@ public class Cashier implements Users {
         return stock_details;
     }
     
+    public int latest_invoice(){
+    
+       int latest_inv_num = 100000;
+        
+        String get_lastst_inv_num = "SELECT `invoice_id` FROM `purchase` ORDER BY `invoice_id` DESC LIMIT 1;";
+
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(get_lastst_inv_num);
+            ResultSet Result_inv = qstate.executeQuery();
+            
+            if(Result_inv.next()){
+                latest_inv_num = Result_inv.getInt("invoice_id");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return latest_inv_num+1;
+    }
+    
+    public boolean purchases_process(String invnum,String billing_date, String billing_time, Object tblarray[][], int rc ,int cc){
+    
+        boolean success = false;
+        
+         String insert_purchasesQ = "INSERT INTO `purchase`(`invoice_id`, `purchase_date`, `purchase_time`, `product_id`, `purchase_quantity`, `discount`, `net_amount`) VALUES ";
+         
+        
+         insert_purchasesQ = insert_purchasesQ.concat(String.format("(%s, '%s', '%s', %s, %s, %s, %s)", invnum,billing_date,billing_time,tblarray[0][0],tblarray[0][3],tblarray[0][4],tblarray[0][5]));
+        
+          
+         for(int i=1; i<=rc-1; i++){
+            insert_purchasesQ = insert_purchasesQ.concat(String.format(",(%s, '%s', '%s', %s, %s, %s, %s)", invnum,billing_date,billing_time,tblarray[i][0],tblarray[i][3],tblarray[i][4],tblarray[i][5]));
+         }
+         
+         
+        PreparedStatement qstate;
+
+        try {
+            qstate = (PreparedStatement) con.prepareStatement(insert_purchasesQ);
+
+            /*insert*/
+            qstate.execute();
+            success = true;
+     
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+         
+        return success;
+    } 
+    
+    public ResultSet get_purchased_for_return(int inv_num){
+    
+        ResultSet purchased_res = null;
+        
+         
+        String get_lastst_inv_num = "SELECT  `product_id` as `Product ID`, `purchase_quantity` as `Quantity`, `discount` as `Discount`, `net_amount` as `Net amount` FROM `purchase` WHERE `invoice_id` ="+inv_num+";";
+
+         PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(get_lastst_inv_num);
+            purchased_res = qstate.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return purchased_res;
+    }
+    
+    public void add_to_returns(int invoice_id, int product_id, String return_date, int quantity , float loss_amount){
+    
+        String add_to_returnsQ = "INSERT INTO `returns`(`invoice_id`, `product_id`, `return_date`, `quantity`, `loss_amount`) VALUES ("+invoice_id+","+ product_id+",'"+ return_date+"',"+ quantity +"," +loss_amount+")";
+        System.out.println(add_to_returnsQ);
+        
+        PreparedStatement qstate;
+
+        try {
+            qstate = (PreparedStatement) con.prepareStatement(add_to_returnsQ);
+
+            /*Confirm and update one row*/
+            qstate.execute();
+            JOptionPane.showMessageDialog(null, "Successfully changed your password.");
+            
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    
+    }
+    
     
     /*=========================================================================================================================================================*/
     

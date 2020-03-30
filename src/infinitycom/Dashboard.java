@@ -1,16 +1,20 @@
 
 package infinitycom;
 
+import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory;
 import java.awt.Color;
 import static java.lang.Thread.sleep;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.proteanit.sql.DbUtils;
 import users.Cashier;
 
 /**
@@ -23,7 +27,7 @@ public class Dashboard extends javax.swing.JFrame {
     
     Encryption enc = Encryption.getEncryption();
     ResultSet selling_stock_details;
-    int selected_item_for_remove;
+  
     
     public Dashboard() {
         initComponents();
@@ -39,7 +43,8 @@ public class Dashboard extends javax.swing.JFrame {
         default_selected();
         
         remove_list.setEnabled(false);
-        
+        print_bill.setEnabled(false);
+        add_to_returns.setEnabled(false);
     }
 
   
@@ -47,6 +52,7 @@ public class Dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel13 = new javax.swing.JLabel();
         main_panel = new javax.swing.JPanel();
         menus_bg = new javax.swing.JPanel();
         menus = new javax.swing.JPanel();
@@ -78,6 +84,10 @@ public class Dashboard extends javax.swing.JFrame {
         clear_all = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         p_list = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
+        invoice_number = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        billing_date = new javax.swing.JTextField();
         setting_panel = new javax.swing.JPanel();
         edit_profile = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -98,7 +108,16 @@ public class Dashboard extends javax.swing.JFrame {
         logout_ProgressBar = new javax.swing.JProgressBar();
         logout_status = new javax.swing.JLabel();
         returns_panel = new javax.swing.JPanel();
-        logout_status1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        return_list = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
+        inv_number_for_return = new javax.swing.JTextField();
+        search_recodes = new javax.swing.JButton();
+        add_to_returns = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        return_qty = new javax.swing.JSpinner();
+
+        jLabel13.setText("jLabel13");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dashboard");
@@ -245,7 +264,7 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel4.setText("Quantity");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Selling Price (1)");
+        jLabel5.setText("Gross price");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Discount (%)");
@@ -266,9 +285,14 @@ public class Dashboard extends javax.swing.JFrame {
 
         print_bill.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         print_bill.setText("Print bill");
+        print_bill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                print_billActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel8.setText("Total price");
+        jLabel8.setText("Total amount");
 
         p_total.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         p_total.setText("00.00");
@@ -286,17 +310,22 @@ public class Dashboard extends javax.swing.JFrame {
 
         clear_all.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         clear_all.setText("Clear all");
+        clear_all.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear_allActionPerformed(evt);
+            }
+        });
 
         p_list.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Product ID", "Product name", "Quantity", "Discount", "Net Price"
+                "Product ID", "Product name", "Gross price", "Quantity", "Discount(%)", "Net Price"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -310,12 +339,22 @@ public class Dashboard extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(p_list);
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel9.setText("Invoice number");
+
+        invoice_number.setEditable(false);
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText("Date");
+
+        billing_date.setEditable(false);
+
         javax.swing.GroupLayout dashboard_panelLayout = new javax.swing.GroupLayout(dashboard_panel);
         dashboard_panel.setLayout(dashboard_panelLayout);
         dashboard_panelLayout.setHorizontalGroup(
             dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dashboard_panelLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
+                .addGap(26, 26, 26)
                 .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(add_to_list, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(dashboard_panelLayout.createSequentialGroup()
@@ -331,23 +370,35 @@ public class Dashboard extends javax.swing.JFrame {
                             .addComponent(p_qty, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(p_name, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(p_price, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(p_discount, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(37, 37, 37)
-                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(p_discount, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(dashboard_panelLayout.createSequentialGroup()
-                        .addComponent(remove_list, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(clear_all, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(print_bill, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dashboard_panelLayout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(p_total, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(31, Short.MAX_VALUE))
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(39, 39, 39)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(invoice_number, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(billing_date, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(33, 33, 33)
+                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dashboard_panelLayout.createSequentialGroup()
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(dashboard_panelLayout.createSequentialGroup()
+                                .addComponent(remove_list, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(clear_all, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(print_bill, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(dashboard_panelLayout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(136, 136, 136)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(p_total, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(35, Short.MAX_VALUE))
+                    .addGroup(dashboard_panelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         dashboard_panelLayout.setVerticalGroup(
             dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -381,13 +432,22 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(p_total)
-                    .addComponent(jLabel10))
-                .addGap(45, 45, 45)
-                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(print_bill, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(remove_list, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(clear_all, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(184, Short.MAX_VALUE))
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel9)
+                    .addComponent(invoice_number, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dashboard_panelLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(billing_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)))
+                    .addGroup(dashboard_panelLayout.createSequentialGroup()
+                        .addGap(69, 69, 69)
+                        .addGroup(dashboard_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(remove_list, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(clear_all, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(print_bill, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
 
         dynamic1.add(dashboard_panel, "card2");
@@ -597,25 +657,102 @@ public class Dashboard extends javax.swing.JFrame {
 
         returns_panel.setBackground(new java.awt.Color(255, 255, 255));
 
-        logout_status1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        logout_status1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logout_status1.setText("returns");
+        return_list.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Product ID", "Quantity", "Discount", "Net amount"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        return_list.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                return_listMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(return_list);
+        if (return_list.getColumnModel().getColumnCount() > 0) {
+            return_list.getColumnModel().getColumn(0).setResizable(false);
+            return_list.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setText("Invoice number");
+
+        inv_number_for_return.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        search_recodes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        search_recodes.setText("Search");
+        search_recodes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_recodesActionPerformed(evt);
+            }
+        });
+
+        add_to_returns.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add_to_returns.setText("Add to return list");
+        add_to_returns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_to_returnsActionPerformed(evt);
+            }
+        });
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel14.setText("Select quantity you want to return");
+
+        return_qty.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         javax.swing.GroupLayout returns_panelLayout = new javax.swing.GroupLayout(returns_panel);
         returns_panel.setLayout(returns_panelLayout);
         returns_panelLayout.setHorizontalGroup(
             returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(returns_panelLayout.createSequentialGroup()
-                .addContainerGap(365, Short.MAX_VALUE)
-                .addComponent(logout_status1, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(342, 342, 342))
+                .addGap(46, 46, 46)
+                .addGroup(returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(returns_panelLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(search_recodes, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(add_to_returns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(returns_panelLayout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addGap(18, 18, 18)
+                        .addComponent(inv_number_for_return, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 2, Short.MAX_VALUE))
+                    .addGroup(returns_panelLayout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(return_qty, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
         returns_panelLayout.setVerticalGroup(
             returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(returns_panelLayout.createSequentialGroup()
-                .addGap(322, 322, 322)
-                .addComponent(logout_status1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(299, Short.MAX_VALUE))
+                .addGap(66, 66, 66)
+                .addGroup(returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(returns_panelLayout.createSequentialGroup()
+                        .addGroup(returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(inv_number_for_return, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12))
+                        .addGap(18, 18, 18)
+                        .addComponent(search_recodes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(81, 81, 81)
+                        .addGroup(returns_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel14)
+                            .addComponent(return_qty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49)
+                        .addComponent(add_to_returns, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         dynamic1.add(returns_panel, "card2");
@@ -632,7 +769,7 @@ public class Dashboard extends javax.swing.JFrame {
         main_panelLayout.setVerticalGroup(
             main_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(menus_bg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(dynamic1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(dynamic1, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -784,8 +921,8 @@ public class Dashboard extends javax.swing.JFrame {
                 p_name.setText("");
                 p_price.setText("");
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         
         
@@ -867,14 +1004,29 @@ public class Dashboard extends javax.swing.JFrame {
              DecimalFormat decimalFormat = new DecimalFormat("#.00");
              String str_net_price = decimalFormat.format(net_price);
         
-             String data[] = {str_pid,str_pname,Integer.toString(int_qty),Float.toString(float_pdiscount) + "%",str_net_price};
+             String data[] = {str_pid,str_pname,Float.toString(float_pgrossprice),Integer.toString(int_qty),Float.toString(float_pdiscount),str_net_price};
                 
                 DefaultTableModel model = (DefaultTableModel) p_list.getModel();
                 model.addRow(data);
                 
+                /*calc total amount*/
+                
+                   /*Float current_amount =  Float.parseFloat(p_total.getText());
+                   Float new_amount = current_amount + net_price;
+                   p_total.setText(String.valueOf(new_amount));*/
+                   
+                   calc_total();
+                /**/
+                
+                
+                set_latest_inv_num();
+                billing_date.setText(date_now());
+                
+                print_bill.setEnabled(true);
                 fresh_dashboard_form();
                 
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Enter valid details.", "Error", JOptionPane.ERROR_MESSAGE);
             }
       
         
@@ -894,8 +1046,15 @@ public class Dashboard extends javax.swing.JFrame {
         try {
             int selected_row_index = p_list.getSelectedRow();
 
-            /*Get selected id*/
+            /*remove selected row and calc new total*/
             model.removeRow(selected_row_index);
+            calc_total();
+            
+            int nRow = model.getRowCount();
+            if(nRow<=0){
+                print_bill.setEnabled(false);
+                fresh_inv_info();
+            }
         
             remove_list.setEnabled(false);
         } catch (Exception e) {
@@ -904,27 +1063,139 @@ public class Dashboard extends javax.swing.JFrame {
         
     }//GEN-LAST:event_remove_listActionPerformed
 
+    private void clear_allActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_allActionPerformed
+        fresh_dashboard_form();
+        fresh_list_table();
+        fresh_inv_info();
+        
+        print_bill.setEnabled(false);
+    }//GEN-LAST:event_clear_allActionPerformed
+
+    private void print_billActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_print_billActionPerformed
+       
+        DefaultTableModel dtm = (DefaultTableModel) p_list.getModel();
+        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+        Object[][] tableData = new Object[nRow][nCol];
+        for (int i = 0 ; i < nRow ; i++)
+            for (int j = 0 ; j < nCol ; j++)
+                tableData[i][j] = dtm.getValueAt(i,j);
+        
+        boolean purchase_success = cashier.purchases_process(invoice_number.getText(), date_now(), time_now(), tableData, nRow, nCol);
+        
+        if(purchase_success){
+            fresh_dashboard_form();
+            fresh_list_table();
+            fresh_inv_info();
+
+            print_bill.setEnabled(false);
+            
+        }
+    }//GEN-LAST:event_print_billActionPerformed
+
+    private void search_recodesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_recodesActionPerformed
+       
+        try {
+            int inv_num = Integer.parseInt(inv_number_for_return.getText());
+            
+            ResultSet purchased_res = cashier.get_purchased_for_return(inv_num);
+            
+            
+            if (purchased_res != null) {
+                return_list.setModel(DbUtils.resultSetToTableModel(purchased_res));
+            }else{
+                 JOptionPane.showMessageDialog(null, "No recodes found.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No recodes found.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        
+        
+    }//GEN-LAST:event_search_recodesActionPerformed
+
+    private void return_listMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_listMouseClicked
+       
+        add_to_returns.setEnabled(true);
+        
+        DefaultTableModel dtm = (DefaultTableModel) return_list.getModel();
+        int selected_row = return_list.getSelectedRow();
+        int q = (int) dtm.getValueAt(selected_row,1);
+
+        return_qty.setModel(new javax.swing.SpinnerNumberModel(1, 0, q, 1));
+        
+        
+        
+    }//GEN-LAST:event_return_listMouseClicked
+
+    private void add_to_returnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_to_returnsActionPerformed
+        
+        DefaultTableModel dtm = (DefaultTableModel) return_list.getModel();
+        int selected_row = return_list.getSelectedRow();
+        
+        int invno =  Integer.parseInt(inv_number_for_return.getText());
+        int product_id = (int) dtm.getValueAt(selected_row,0);
+        int qty = (int) return_qty.getValue();     
+        float loss = ((float)dtm.getValueAt(selected_row,3)/(int)dtm.getValueAt(selected_row,1))*qty ;
+        
+        cashier.add_to_returns(invno, product_id, this.date_now(), qty, loss);
+        
+    }//GEN-LAST:event_add_to_returnsActionPerformed
+
     
+    private void fresh_inv_info(){
+        invoice_number.setText("");
+        billing_date.setText("");
+    }
+   
     private void fresh_dashboard_form(){
-    
         p_id.setText("");
         p_name.setText("");
         p_qty.setText("");
         p_discount.setText("");
-        p_price.setText("");
-        
+        p_price.setText("");   
+    }
+   
+    private void fresh_list_table(){
+        DefaultTableModel dm = (DefaultTableModel) p_list.getModel();
+        int rowCount = dm.getRowCount();
+        //Remove rows one by one from the end of the table
+        for (int i = rowCount - 1; i >= 0; i--) {
+            dm.removeRow(i);
+        }
+        p_total.setText("0.00");
     }
     
+    private void set_latest_inv_num(){
+        invoice_number.setText(String.valueOf(cashier.latest_invoice()));
+    }
     
-    private void fresh_list_table(){
+    private String date_now(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");  
+        Date date = new Date();  
+        return formatter.format(date);  
+    } 
     
+    private String time_now(){
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+        Date date = new Date();  
+        return formatter.format(date);
+    }
     
-        DefaultTableModel model = (DefaultTableModel) p_list.getModel();
-        int selected_row_index = p_list.getSelectedRow();
-
-        /*Get selected id*/
-        String selected_id = model.getValueAt(selected_row_index, 0).toString();
-        //System.out.println(selected_id);
+    private void calc_total(){
+    
+        float total = 0.00f;
+        
+        DefaultTableModel dtm = (DefaultTableModel) p_list.getModel();
+        int nRow = dtm.getRowCount();
+        
+        for(int i = 0; i<nRow; i++){
+            total = total + Float.parseFloat((String) dtm.getValueAt(i,5));
+        }
+        
+        p_total.setText(String.valueOf(total));
     }
     
     
@@ -965,7 +1236,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_to_list;
+    private javax.swing.JButton add_to_returns;
     private javax.swing.JPanel barcode_config;
+    private javax.swing.JTextField billing_date;
     private javax.swing.JPanel change_password;
     private javax.swing.JButton change_pwd;
     private javax.swing.JButton clear_all;
@@ -979,8 +1252,14 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JTextField edit_user_name;
     private javax.swing.JPanel header;
     private javax.swing.JLabel header_text;
+    private javax.swing.JTextField inv_number_for_return;
+    private javax.swing.JTextField invoice_number;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
@@ -991,12 +1270,13 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel logout;
     private javax.swing.JProgressBar logout_ProgressBar;
     private javax.swing.JPanel logout_panel;
     private javax.swing.JLabel logout_status;
-    private javax.swing.JLabel logout_status1;
     private javax.swing.JPanel main_panel;
     private javax.swing.JPanel menus;
     private javax.swing.JPanel menus_bg;
@@ -1010,9 +1290,12 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel p_total;
     private javax.swing.JButton print_bill;
     private javax.swing.JButton remove_list;
+    private javax.swing.JTable return_list;
+    private javax.swing.JSpinner return_qty;
     private javax.swing.JLabel returns;
     private javax.swing.JPanel returns_panel;
     private javax.swing.JButton save_user_detail_changes;
+    private javax.swing.JButton search_recodes;
     private javax.swing.JPanel setting_panel;
     private javax.swing.JLabel settings;
     private javax.swing.JLabel theme;
