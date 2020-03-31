@@ -95,7 +95,7 @@ public class Admin_panel extends javax.swing.JFrame {
         add_product_cat = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
         add_qty = new javax.swing.JTextField();
-        add_stock_price = new javax.swing.JTextField();
+        add_purchasing_price = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         add_selling_price = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
@@ -649,15 +649,15 @@ public class Admin_panel extends javax.swing.JFrame {
 
         add_qty.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        add_stock_price.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        add_purchasing_price.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel18.setText("Stock price");
+        jLabel18.setText("purchasing price per unit");
 
         add_selling_price.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel19.setText("Selling price");
+        jLabel19.setText("Selling price per unit");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -673,7 +673,7 @@ public class Admin_panel extends javax.swing.JFrame {
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(add_selling_price, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(add_stock_price, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(add_purchasing_price, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(add_qty, javax.swing.GroupLayout.Alignment.LEADING)
@@ -712,7 +712,7 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel18)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add_stock_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(add_purchasing_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1448,14 +1448,14 @@ public class Admin_panel extends javax.swing.JFrame {
             String product_category = (String) add_product_cat.getSelectedItem();
             String product_name = add_product_name.getText();
             int qty = Integer.parseInt(add_qty.getText());
-            float stock_price = Float.parseFloat(add_stock_price.getText());
+            float purchasing_price = Float.parseFloat(add_purchasing_price.getText());
             float selling_price = Float.parseFloat(add_selling_price.getText());
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             String d = formatter.format(date);
 
-            this.admin.add_inventory(product_id, product_category, product_name, qty, stock_price, selling_price, d);
+            this.admin.add_inventory(product_id, product_category, product_name, qty, purchasing_price, selling_price, d);
             refresh_inventory_tbl();
 
         } catch (Exception e) {
@@ -1480,7 +1480,7 @@ public class Admin_panel extends javax.swing.JFrame {
             ResultSet selected_stock_res = this.admin.get_selected_stock();
             if (selected_stock_res.next()) {
 
-                update_stock.set_update_stock_form(selected_stock_res.getString("product_category"), selected_stock_res.getString("stock_id"), selected_stock_res.getString("product_name"), selected_stock_res.getString("quantity"),selected_stock_res.getString("stock_price") , selected_stock_res.getString("selling_price") );
+                update_stock.set_update_stock_form(selected_stock_res.getString("product_category"), selected_stock_res.getString("stock_id"), selected_stock_res.getString("product_name"), selected_stock_res.getString("quantity"),selected_stock_res.getString("purchasing_price") , selected_stock_res.getString("selling_price") );
 
                 stock_update.setEnabled(true);
                 stock_remove.setEnabled(true);
@@ -1515,7 +1515,7 @@ public class Admin_panel extends javax.swing.JFrame {
         add_stock_id.setText("");
         add_product_name.setText("");
         add_qty.setText("");
-        add_stock_price.setText("");
+        add_purchasing_price.setText("");
         add_selling_price.setText("");
 
     }
@@ -1590,10 +1590,10 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JButton add_inv;
     private javax.swing.JComboBox<String> add_product_cat;
     private javax.swing.JTextField add_product_name;
+    private javax.swing.JTextField add_purchasing_price;
     private javax.swing.JTextField add_qty;
     private javax.swing.JTextField add_selling_price;
     private javax.swing.JTextField add_stock_id;
-    private javax.swing.JTextField add_stock_price;
     private javax.swing.JPanel barcode_config;
     private javax.swing.JButton cat_btn;
     private javax.swing.JTextField cat_name;

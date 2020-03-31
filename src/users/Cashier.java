@@ -2,7 +2,6 @@ package users;
 
 import com.mysql.jdbc.Connection;
 import infinitycom.DBConnection;
-import infinitycom.Update_stock;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

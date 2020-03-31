@@ -363,7 +363,7 @@ public class Admin implements Users {
 
     /*=========================================================================================================================================================*/
  /*=================================================== Inventory =====================================================================================*/
-    public void add_inventory(int stock_id, String product_category, String product_name, int qty, float stock_price, float selling_price, String date) {
+    public void add_inventory(int stock_id, String product_category, String product_name, int qty, float purchasing_price, float selling_price, String date) {
 
         ResultSet res = null;
         String get_product_catIDQ = "SELECT `cat_id` FROM `category` WHERE `cat_name` = '" + product_category + "'";
@@ -377,7 +377,7 @@ public class Admin implements Users {
 
             if (res.next()) {
 
-                String add_invQ = "INSERT INTO `inventory`(`stock_id`, `product_category`, `product_name`, `quantity`, `stock_price`, `selling_price`, `date`) VALUES ( " + stock_id + ", " + res.getString("cat_id") + ", '" + product_name + "', " + qty + ", " + stock_price + ", " + selling_price + ", '" + date + "')";
+                String add_invQ = "INSERT INTO `inventory`(`stock_id`, `product_category`, `product_name`, `quantity`, `purchasing_price`, `selling_price`, `date`) VALUES ( " + stock_id + ", " + res.getString("cat_id") + ", '" + product_name + "', " + qty + ", " + purchasing_price + ", " + selling_price + ", '" + date + "')";
 
                 try {
                     qstate = (PreparedStatement) con.prepareStatement(add_invQ);
@@ -399,7 +399,7 @@ public class Admin implements Users {
 
     }
 
-    public void update_inventory(int stock_id, String product_category, String product_name, int qty, float stock_price, float selling_price, String date) {
+    public void update_inventory(int stock_id, String product_category, String product_name, int qty, float purchasing_price, float selling_price, String date) {
 
        /* ResultSet res = null;
         String get_product_catIDQ = "SELECT `cat_id` FROM `category` WHERE `cat_name` = '" + product_category + "'";
@@ -413,7 +413,7 @@ public class Admin implements Users {
 
             if (res.next()) {
 
-                String add_invQ = "INSERT INTO `inventory`(`stock_id`, `product_category`, `product_name`, `quantity`, `stock_price`, `selling_price`, `date`) VALUES ( " + stock_id + ", " + res.getString("cat_id") + ", '" + product_name + "', " + qty + ", " + stock_price + ", " + selling_price + ", '" + date + "')";
+                String add_invQ = "INSERT INTO `inventory`(`stock_id`, `product_category`, `product_name`, `quantity`, `purchasing_price`, `selling_price`, `date`) VALUES ( " + stock_id + ", " + res.getString("cat_id") + ", '" + product_name + "', " + qty + ", " + stock_price + ", " + selling_price + ", '" + date + "')";
 
                 try {
                     qstate = (PreparedStatement) con.prepareStatement(add_invQ);
@@ -438,7 +438,7 @@ public class Admin implements Users {
     public ResultSet get_all_stocks() {
 
         ResultSet res = null;
-        String selectusersQ = "SELECT i.`stock_id` as `Stock ID`, c.`cat_name` as `Product category` , i.`product_name` as `Product name`, i.`quantity` as `Quantity`, i.`stock_price` as `Stock price`, i.`selling_price` as `Selling price`, i.`date` as `Date` FROM `inventory` i, `category` c WHERE i.`product_category`=c.`cat_id`";
+        String selectusersQ = "SELECT i.`stock_id` as `Stock ID`, c.`cat_name` as `Product category` , i.`product_name` as `Product name`, i.`quantity` as `Quantity`, i.`purchasing_price` as `purchasing price`, i.`selling_price` as `Selling price`, i.`date` as `Date` FROM `inventory` i, `category` c WHERE i.`product_category`=c.`cat_id`";
 
         PreparedStatement qstate;
         try {
