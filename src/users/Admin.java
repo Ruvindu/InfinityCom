@@ -578,7 +578,24 @@ public class Admin implements Users {
         return summray_res;
     }
       
+    public ResultSet get_return_by_category_wise(String []selected_duration,int cat_id){
     
+        ResultSet returns_res = null;
+    
+        String returnsQ = "SELECT r.`quantity`as `return_quantitiy` , r.`loss_amount` FROM `returns` as r , `inventory` as i  WHERE  r.`product_id` = i.`stock_id`  and r.`return_date` >= '"+selected_duration[0]+"' and r.`return_date` <= '"+selected_duration[1]+"'  and i.`product_category` =" + cat_id;
+       
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(returnsQ);
+            returns_res = qstate.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }       
+    
+        return returns_res;
+    }
     
     
     public String report_demo(String []selected_duration){
@@ -686,6 +703,45 @@ public class Admin implements Users {
         
         
         
+        String str_returns = ""; 
+        
+        float total_loss_of_returns = 0.0f ;
+        total_qty = 0;
+        
+        try {
+            
+            categories.beforeFirst();
+            
+            while(categories.next()){
+                ResultSet returns_res = this.get_return_by_category_wise(selected_duration, Integer.parseInt(categories.getString("cat_id")));
+                
+                if(returns_res.next()){
+                    if(returns_res.getString("return_quantitiy")!=null){
+                        
+                        total_qty = Integer.parseInt(returns_res.getString("return_quantitiy"));
+                        total_loss_of_returns += Float.parseFloat(returns_res.getString("loss_amount"));
+                    
+                        str_returns = str_returns.concat("<tr> <th scope=\"row\">"+categories.getString("cat_name")+"</th>");
+                        str_returns = str_returns.concat("<td>"+returns_res.getString("return_quantitiy")+"</td>");
+                        str_returns = str_returns.concat("<td>"+returns_res.getString("loss_amount")+"</td>");
+                        str_returns = str_returns.concat("</tr>");
+                    }
+                    
+                }
+            }
+            
+            str_returns = str_returns.concat("<tr> <th scope=\"row\">Total</th>");
+            str_returns = str_returns.concat("<th>"+total_qty+"</th>");
+            str_returns = str_returns.concat("<th>"+total_loss_of_returns+"</th>");
+            str_returns = str_returns.concat("</tr>");
+            
+            
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         System.out.println(str_purchased_qty);
 
         
@@ -705,7 +761,11 @@ public class Admin implements Users {
 "  \n" +
 "  \n" +
 "    <style>\n" +
-"  \n" +
+"  \n"
+                + "caption{\n" +
+"		color:#000;\n" +
+"		caption-side: top;\n" +
+"		} "+
 "       #chart {\n" +
 "      max-width: 650px;\n" +
 "      margin: 35px auto;\n" +
@@ -799,7 +859,25 @@ public class Admin implements Users {
 "		</div>\n" +
 "	</div>" +
                 
-                
+                " <div class=\"row\">\n" +
+"		<div class=\"col-md-12\">\n" +
+"		 \n" +
+"		 \n" +
+"		 <table class=\"table mt-3 mb-3\">\n" +
+"		 <caption>Returns of this month</caption>\n" +               
+"		  <thead class=\"thead-light\">\n" +
+"			<tr>\n" +
+"			  <th scope=\"col\">Category</th>\n" +
+"			  <th scope=\"col\">Quantity</th>\n" +
+"			  <th scope=\"col\">Loss amount</th>\n" +
+"			</tr>\n" +
+"		  </thead>\n" +
+"		  <tbody>\n" + str_returns + "</tbody>\n" +
+"		</table>\n" +
+"\n" +
+"\n" +
+"		</div>\n" +
+"	</div>" +                
                 
                 
                 
