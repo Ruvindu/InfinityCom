@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -475,4 +477,340 @@ public class Admin implements Users {
     
 
     /*====================================================================================================================================================*/
+    
+    
+    /*=================================================== report =====================================================================================*/
+    
+    public Date[] get_available_date_duration(){
+    
+        Date[] date_range = new Date[2];  
+        
+        ResultSet date_range_res = null;
+        
+        String start_q = "SELECT `purchase_date` FROM `purchase` ORDER BY `purchase_date` DESC LIMIT 1";
+        String end_q = "SELECT `purchase_date` FROM `purchase` ORDER BY `purchase_date` ASC LIMIT 1";
+
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(start_q);
+            date_range_res = qstate.executeQuery();
+            
+            if(date_range_res.next()){
+                date_range[0] = date_range_res.getDate("purchase_date");
+            }
+            
+            
+            qstate = (PreparedStatement) con.prepareStatement(end_q);
+            date_range_res = qstate.executeQuery();
+            
+            if(date_range_res.next()){
+                date_range[1] = date_range_res.getDate("purchase_date");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+        return date_range;
+    }
+    
+    public ResultSet get_categories(){
+    
+        ResultSet cat_res = null;
+        
+        String selectusersQ = "SELECT * FROM `category`";
+
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(selectusersQ);
+            cat_res = qstate.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    
+        return cat_res;
+    }
+    
+    public ResultSet get_purchased_qty_by_category_wise(String []selected_duration,int cat_id){
+    
+        ResultSet qty_res = null;
+        
+        String purchased_qtyQ = "SELECT sum( p.`purchase_quantity` ) as `purchased_quantity` FROM `purchase` as p , `inventory` as i WHERE p.`product_id` = i.`stock_id` and `purchase_date` >= '"+selected_duration[0]+"' and `purchase_date` <= '"+selected_duration[1]+"' and i.`product_category` = " + cat_id;
+
+             
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(purchased_qtyQ);
+            qty_res = qstate.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    
+        return qty_res;
+    }
+             
+    public ResultSet get_summray_by_category_wise(String []selected_duration,int cat_id){
+    
+        ResultSet summray_res = null;
+        
+        String purchased_qtyQ = "SELECT sum( p.`purchase_quantity` ) as `purchased_quantity`, sum(i.`purchasing_price`) as `cost`, sum(p.`net_amount`) as `revenue`   FROM `purchase` as p , `inventory` as i WHERE p.`product_id` = i.`stock_id` and `purchase_date` >= '"+selected_duration[0]+"' and `purchase_date` <= '"+selected_duration[1]+"' and i.`product_category` = " + cat_id;
+
+             
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(purchased_qtyQ);
+            summray_res = qstate.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+    
+        return summray_res;
+    }
+      
+    
+    
+    
+    public String report_demo(String []selected_duration){
+    
+        /*preper for string*/
+        
+        ResultSet categories = this.get_categories();
+        
+        
+        String str_categories = "";
+        
+        try {
+            if(categories.next()){
+                str_categories = str_categories.concat("'"+categories.getString("cat_name")+"'");
+            }
+            while (categories.next()) {
+                 str_categories = str_categories.concat(",'"+categories.getString("cat_name")+"'"); 
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        String str_purchased_qty = "";
+        
+        try {
+            ResultSet purchased_qty;
+            categories.first();
+            //if(categories.next()){
+                 purchased_qty = this.get_purchased_qty_by_category_wise(selected_duration , Integer.parseInt(categories.getString("cat_id")) );
+                
+                if(purchased_qty.next()){
+                    if(purchased_qty.getString("purchased_quantity")!=null){
+                        str_purchased_qty = str_purchased_qty.concat(purchased_qty.getString("purchased_quantity"));
+                    }else{
+                        str_purchased_qty = str_purchased_qty.concat("0");
+                    }
+                }
+                
+            //}
+            while (categories.next()) {
+                 purchased_qty = this.get_purchased_qty_by_category_wise(selected_duration , Integer.parseInt(categories.getString("cat_id")) );
+                
+                if(purchased_qty.next()){
+                    if(purchased_qty.getString("purchased_quantity")!=null){
+                        str_purchased_qty = str_purchased_qty.concat(","+purchased_qty.getString("purchased_quantity"));
+                    }else{
+                        str_purchased_qty = str_purchased_qty.concat(",0");
+                    }
+                }
+            }
+    
+        } catch (SQLException ex) {
+            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        String selling_summary = "";
+        
+        float total_revenue = 0.0f;
+        float total_cost = 0.0f;
+        int total_qty = 0;
+        
+        try {
+            ResultSet selling_summary_res;
+            categories.beforeFirst();
+            
+            while (categories.next()) {
+                selling_summary_res = this.get_summray_by_category_wise(selected_duration , Integer.parseInt(categories.getString("cat_id")) );
+                
+                if(selling_summary_res.next()){
+                    if(selling_summary_res.getString("purchased_quantity")!=null){
+                        
+                        total_qty += Integer.parseInt(selling_summary_res.getString("purchased_quantity"));
+                        total_cost += Float.parseFloat(selling_summary_res.getString("cost"));
+                        total_revenue += Float.parseFloat(selling_summary_res.getString("revenue"));
+                      
+                        
+                        selling_summary = selling_summary.concat("<tr> <th scope=\"row\">"+categories.getString("cat_name")+"</th>");
+                        selling_summary = selling_summary.concat("<td>"+selling_summary_res.getString("purchased_quantity")+"</td>");
+                        selling_summary = selling_summary.concat("<td>"+selling_summary_res.getString("cost")+"</td>");
+                        selling_summary = selling_summary.concat("<td>"+selling_summary_res.getString("revenue")+"</td>");
+                        selling_summary = selling_summary.concat("</tr>");
+                    }else{
+                        selling_summary = selling_summary.concat("<tr> <th scope=\"row\">"+categories.getString("cat_name")+"</th>");
+                        selling_summary = selling_summary.concat("<td>0</td>");
+                        selling_summary = selling_summary.concat("<td>0.00</td>");
+                        selling_summary = selling_summary.concat("<td>0.00</td>");
+                        selling_summary = selling_summary.concat("</tr>");
+                    }
+                }
+                
+            }
+            
+            selling_summary = selling_summary.concat("<tr> <th scope=\"row\">Total</th>");
+            selling_summary = selling_summary.concat("<th>"+total_qty+"</th>");
+            selling_summary = selling_summary.concat("<th>"+total_cost+"</th>");
+            selling_summary = selling_summary.concat("<th>"+total_revenue+"</th>");
+            selling_summary = selling_summary.concat("</tr>");
+            
+    
+        } catch (SQLException ex) {
+            Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        System.out.println(str_purchased_qty);
+
+        
+        
+        /**/
+        
+        String demo = "<!DOCTYPE html>\n" +
+"<html lang=\"en\">\n" +
+"<head>\n" +
+"  <title>Bootstrap Example</title>\n" +
+"  <meta charset=\"utf-8\">\n" +
+"  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
+"  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\">\n" +
+"  <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>\n" +
+"  <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js\"></script>\n" +
+"  <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js\"></script>\n" +
+"  \n" +
+"  \n" +
+"    <style>\n" +
+"  \n" +
+"       #chart {\n" +
+"      max-width: 650px;\n" +
+"      margin: 35px auto;\n" +
+"    }\n" +
+"    </style>\n" +
+"\n" +
+"    <script>\n" +
+"      window.Promise ||\n" +
+"        document.write(\n" +
+"          '<script src=\"https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js\"><\\/script>'\n" +
+"        )\n" +
+"      window.Promise ||\n" +
+"        document.write(\n" +
+"          '<script src=\"https://cdn.jsdelivr.net/npm/eligrey-classlist-js-polyfill@1.2.20171210/classList.min.js\"><\\/script>'\n" +
+"        )\n" +
+"      window.Promise ||\n" +
+"        document.write(\n" +
+"          '<script src=\"https://cdn.jsdelivr.net/npm/findindex_polyfill_mdn\"><\\/script>'\n" +
+"        )\n" +
+"    </script>\n" +
+"\n" +
+"    \n" +
+"    <script src=\"https://cdn.jsdelivr.net/npm/apexcharts\"></script>\n" +
+"  \n" +
+"  \n" +
+"  \n" +
+"</head>\n" +
+"<body>\n" +
+"\n" +
+"<div class=\"jumbotron text-center\">\n" +
+"  <h1>Infinitycom monthly profit and loss report</h1>\n" +
+"  <p>"+  selected_duration[0] +" to "+ selected_duration[1] +"</p> \n" +
+                
+                
+"</div><div class=\"container\">\n" +
+"\n" +
+"	<div class=\"row\">\n" +
+"		<div class=\"col-md-12\">\n" +
+"		  \n" +
+"		  <div id=\"chart\"><b>Sales of this month</b></div>\n" +
+"	\n" +
+"			<script>\n" +
+"			  \n" +
+"				var options = {\n" +
+"				  series: [{\n" +
+"				  data: ["+str_purchased_qty+"]\n" +
+"				}],\n" +
+"				  chart: {\n" +
+"				  type: 'bar',\n" +
+"				  height: 350\n" +
+"				},\n" +
+"				plotOptions: {\n" +
+"				  bar: {\n" +
+"					horizontal: true,\n" +
+"				  }\n" +
+"				},\n" +
+"				dataLabels: {\n" +
+"				  enabled: true\n" +
+"				},\n" +
+"				xaxis: {\n" +
+"				  categories: [" + str_categories + "],\n" +
+"				}\n" +
+"				};\n" +
+"\n" +
+"				var chart = new ApexCharts(document.querySelector(\"#chart\"), options);\n" +
+"				chart.render();\n" +
+"			  \n" +
+"			  \n" +
+"			</script>\n" +
+"	\n" +
+"		</div>\n" +
+"	</div>"
+                + " <div class=\"row\">\n" +
+"		<div class=\"col-md-12\">\n" +
+"		 \n" +
+"		 \n" +
+"		 <table class=\"table mt-3 mb-3\">\n" +
+"		 <caption>Sales of this month</caption>\n" +               
+"		  <thead class=\"thead-light\">\n" +
+"			<tr>\n" +
+"			  <th scope=\"col\">Category</th>\n" +
+"			  <th scope=\"col\">Quantity</th>\n" +
+"			  <th scope=\"col\">Cost</th>\n" +
+"			  <th scope=\"col\">Revenue</th>\n" +
+"			</tr>\n" +
+"		  </thead>\n" +
+"		  <tbody>\n" + selling_summary + "</tbody>\n" +
+"		</table>\n" +
+"\n" +
+"\n" +
+"		</div>\n" +
+"	</div>" +
+                
+                
+                
+                
+                
+"</div>\n" +
+"</body>\n" +
+"</html>";
+        
+        
+        return demo;
+    }
+    
+    
+    /*=================================================================================================================================================*/
 }

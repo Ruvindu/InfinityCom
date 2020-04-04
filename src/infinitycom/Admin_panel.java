@@ -1,6 +1,10 @@
 package infinitycom;
 
 import java.awt.Color;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -123,6 +127,15 @@ public class Admin_panel extends javax.swing.JFrame {
         logout_panel = new javax.swing.JPanel();
         logout_ProgressBar = new javax.swing.JProgressBar();
         logout_status = new javax.swing.JLabel();
+        report_panel = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        start_dateChooser = new com.toedter.calendar.JDateChooser();
+        end_dateChooser = new com.toedter.calendar.JDateChooser();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        view_report = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
 
         jLabel3.setText("jLabel3");
 
@@ -1028,6 +1041,100 @@ public class Admin_panel extends javax.swing.JFrame {
 
         dynamic1.add(logout_panel, "card2");
 
+        report_panel.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Profit and loss report"));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel1.setText("Start date");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel5.setText("End date");
+
+        view_report.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        view_report.setText("Veiw report");
+        view_report.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                view_reportActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("<html>\nSelect time duration you want to veiw profit and loss report.\n</html>");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(view_report, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(start_dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(end_dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(31, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(start_dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(end_dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
+                .addComponent(view_report, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(308, Short.MAX_VALUE))
+        );
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Notifications"));
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 367, Short.MAX_VALUE)
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout report_panelLayout = new javax.swing.GroupLayout(report_panel);
+        report_panel.setLayout(report_panelLayout);
+        report_panelLayout.setHorizontalGroup(
+            report_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(report_panelLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        report_panelLayout.setVerticalGroup(
+            report_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(report_panelLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(report_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+
+        dynamic1.add(report_panel, "card2");
+
         javax.swing.GroupLayout main_panelLayout = new javax.swing.GroupLayout(main_panel);
         main_panel.setLayout(main_panelLayout);
         main_panelLayout.setHorizontalGroup(
@@ -1100,9 +1207,11 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.repaint();
         dynamic1.revalidate();
 
-        //dynamic1.add(null);
+        dynamic1.add(report_panel);
         dynamic1.repaint();
         dynamic1.revalidate();
+        
+        this.set_available_date_duration();
     }//GEN-LAST:event_reportsMouseClicked
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
@@ -1499,6 +1608,46 @@ public class Admin_panel extends javax.swing.JFrame {
         
     }//GEN-LAST:event_stock_updateActionPerformed
 
+    private void view_reportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view_reportActionPerformed
+       
+        String[] selected_date_range = new String[2];  
+        
+        SimpleDateFormat dateformater = new SimpleDateFormat("yyyy-MM-dd");
+        
+        try {
+            selected_date_range[0] =  dateformater.format(start_dateChooser.getDate());
+            selected_date_range[1] =  dateformater.format(end_dateChooser.getDate());
+            
+            
+            String new_report = admin.report_demo(selected_date_range);
+            
+            write_and_excute_report(new_report);
+            
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        
+    }//GEN-LAST:event_view_reportActionPerformed
+
+    private void write_and_excute_report(String report){
+        
+        String username = System.getProperty("user.name");
+        
+        try {
+          FileWriter reportWriter = new FileWriter("C:\\Users\\"+username+"\\Documents\\infinitycom_monthly_report.html");
+          reportWriter.write(report);
+          reportWriter.close();
+          
+          Desktop.getDesktop().open(new File("C:\\Users\\"+username+"\\Documents\\infinitycom_monthly_report.html"));
+       
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+  }
+    
+    
+    
     private void refresh_inv_add_form() {
 
         ResultSet all_cat = this.admin.get_all_categories();
@@ -1528,7 +1677,6 @@ public class Admin_panel extends javax.swing.JFrame {
         }
     }
     
-   
 
     private void refresh_cat_form() {
 
@@ -1547,6 +1695,32 @@ public class Admin_panel extends javax.swing.JFrame {
             categoty_table.setModel(DbUtils.resultSetToTableModel(res_cats));
         }
     }
+    
+    
+    private void set_available_date_duration(){
+    
+        SimpleDateFormat dateformater = new SimpleDateFormat("yyyy-MM-dd");
+        
+        Date start = admin.get_available_date_duration()[1];
+        Date end = admin.get_available_date_duration()[0];
+   
+        System.out.println(start);
+        System.out.println(end);
+
+        
+        try {
+            
+            start_dateChooser.setSelectableDateRange(start, end);
+            end_dateChooser.setSelectableDateRange(start, end);
+
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        
+        
+    }
+    
 
     /**
      * @param args the command line arguments
@@ -1609,11 +1783,13 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPanel edit_profile;
     private javax.swing.JTextField edit_user_email;
     private javax.swing.JTextField edit_user_name;
+    private com.toedter.calendar.JDateChooser end_dateChooser;
     private javax.swing.JPanel header;
     private javax.swing.JLabel header_text;
     private javax.swing.JLabel inventory;
     private javax.swing.JPanel inventory_panel;
     private javax.swing.JTable inventory_table;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
@@ -1631,13 +1807,17 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1651,11 +1831,13 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPasswordField new_pwd;
     private javax.swing.JButton remove_cat;
     private javax.swing.JButton remove_user;
+    private javax.swing.JPanel report_panel;
     private javax.swing.JLabel reports;
     private javax.swing.JCheckBox reset_default_pwd;
     private javax.swing.JButton save_user_detail_changes;
     private javax.swing.JPanel setting_panel;
     private javax.swing.JLabel settings;
+    private com.toedter.calendar.JDateChooser start_dateChooser;
     private javax.swing.JButton stock_remove;
     private javax.swing.JButton stock_update;
     private javax.swing.JTabbedPane tabs;
@@ -1669,6 +1851,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JLabel users;
     private javax.swing.JPanel users_add_update;
     private javax.swing.JPanel users_panel;
+    private javax.swing.JButton view_report;
     private javax.swing.JPanel view_users;
     // End of variables declaration//GEN-END:variables
 }
