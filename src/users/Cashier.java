@@ -189,6 +189,8 @@ public class Cashier implements Users {
 
             /*insert*/
             qstate.execute();
+            /* update inventory */
+            this.update_inventory_after_purchases(tblarray,rc);
             success = true;
      
         } catch (SQLException ex) {
@@ -239,8 +241,94 @@ public class Cashier implements Users {
     
     }
     
+    public void update_inventory_after_purchases(Object tblarray[][], int rc){
+    
+     
+        
+        for(int i=0; i<rc; i++){
+               
+                String update_inventryQ = "UPDATE `inventory` SET `quantity`= `quantity` - " + tblarray[i][3] + "  WHERE `stock_id` = " + tblarray[i][0];
+
+                 PreparedStatement qstate;
+
+                try {
+                    qstate = (PreparedStatement) con.prepareStatement(update_inventryQ);
+
+                    /*insert*/
+                    qstate.execute();
+                    /* generate notifications*/
+                    this.generate_notification(tblarray,rc);
+
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+        
+        }
+        
+    }
     
     /*=========================================================================================================================================================*/
     
+    
+    /*============================================================== notificaions ========================================================================*/  
+ 
+    
+    public void generate_notification(Object tblarray[][], int rc){
+    
+        ResultSet stock_details = null;
+        
+        for(int i=0; i<rc; i++){
+            
+                String selectusersQ = "SELECT `stock_id` ,`quantity` FROM `inventory` WHERE `stock_id`= " + tblarray[i][0];
+
+                PreparedStatement qstate;
+                try {
+
+                    qstate = (PreparedStatement) con.prepareStatement(selectusersQ);
+                    stock_details = qstate.executeQuery();
+                    
+                        if(stock_details.next()){
+                            
+                            String description = "";
+                            
+                            if(stock_details.getInt("quantity")==0){
+                                description = "All items are over in stock " + stock_details.getInt("stock_id") + ".";
+                                this.insert_new_notification(description);
+                                
+                            }else if(stock_details.getInt("quantity")<=3){
+                                description = "Quantity is lower than 3 in stock " + stock_details.getInt("stock_id") + ".";
+                                this.insert_new_notification(description);
+                            }
+                        }
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }               
+                
+        
+        }
+        
+    }
+    
+    public void insert_new_notification(String description){
+    
+        String notification_instertQ = "INSERT INTO `notification`( `description`, `state`) VALUES ('"+description+"',0)";
+        
+         PreparedStatement qstate;
+
+        try {
+            qstate = (PreparedStatement) con.prepareStatement(notification_instertQ);
+
+            /*insert*/
+            qstate.execute();
+          
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
+    
+    /*=========================================================================================================================================================*/
     
 }

@@ -24,7 +24,7 @@ public class Admin_panel extends javax.swing.JFrame {
 
     Encryption enc = Encryption.getEncryption();
 
-    Update_stock update_stock = new Update_stock();
+    Update_stock update_stock = new Update_stock(admin);
     
     public Admin_panel() {
         initComponents();
@@ -136,6 +136,11 @@ public class Admin_panel extends javax.swing.JFrame {
         view_report = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        notification_tbl = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        notification_loader = new javax.swing.JTextArea();
+        clear_notification = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
@@ -1096,20 +1101,69 @@ public class Admin_panel extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addComponent(view_report, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(308, Short.MAX_VALUE))
+                .addContainerGap(337, Short.MAX_VALUE))
         );
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Notifications"));
+
+        notification_tbl.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                ""
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        notification_tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                notification_tblMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(notification_tbl);
+
+        notification_loader.setColumns(20);
+        notification_loader.setRows(5);
+        jScrollPane5.setViewportView(notification_loader);
+
+        clear_notification.setText("Clear");
+        clear_notification.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clear_notificationActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 367, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(clear_notification, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(clear_notification)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout report_panelLayout = new javax.swing.GroupLayout(report_panel);
@@ -1120,8 +1174,8 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         report_panelLayout.setVerticalGroup(
             report_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1130,7 +1184,7 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addGroup(report_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         dynamic1.add(report_panel, "card2");
@@ -1212,6 +1266,9 @@ public class Admin_panel extends javax.swing.JFrame {
         dynamic1.revalidate();
         
         this.set_available_date_duration();
+        this.refresh_notifcation_tbl();
+        
+        clear_notification.setEnabled(false);
     }//GEN-LAST:event_reportsMouseClicked
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
@@ -1630,6 +1687,33 @@ public class Admin_panel extends javax.swing.JFrame {
         
     }//GEN-LAST:event_view_reportActionPerformed
 
+    private void notification_tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_notification_tblMouseClicked
+        
+        DefaultTableModel model = (DefaultTableModel) notification_tbl.getModel();
+        int selected_row_index = notification_tbl.getSelectedRow();
+        
+        String selected_notifi_id = model.getValueAt(selected_row_index, 0).toString();
+        String description = model.getValueAt(selected_row_index, 1).toString();
+        
+        notification_loader.setText(description);
+        
+        admin.change_notification_state(Integer.parseInt(selected_notifi_id));
+        clear_notification.setEnabled(true);
+    }//GEN-LAST:event_notification_tblMouseClicked
+
+    private void clear_notificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_notificationActionPerformed
+       
+        DefaultTableModel model = (DefaultTableModel) notification_tbl.getModel();
+        int selected_row_index = notification_tbl.getSelectedRow();
+        
+        String selected_notifi_id = model.getValueAt(selected_row_index, 0).toString();
+        
+        admin.delete_notification(selected_notifi_id);
+        this.refresh_notifcation_tbl();
+        clear_notification.setEnabled(false);
+        
+    }//GEN-LAST:event_clear_notificationActionPerformed
+
     private void write_and_excute_report(String report){
         
         String username = System.getProperty("user.name");
@@ -1695,8 +1779,7 @@ public class Admin_panel extends javax.swing.JFrame {
             categoty_table.setModel(DbUtils.resultSetToTableModel(res_cats));
         }
     }
-    
-    
+     
     private void set_available_date_duration(){
     
         SimpleDateFormat dateformater = new SimpleDateFormat("yyyy-MM-dd");
@@ -1721,7 +1804,15 @@ public class Admin_panel extends javax.swing.JFrame {
         
     }
     
-
+    private void refresh_notifcation_tbl(){
+    
+        ResultSet res_notifi = this.admin.get_notifications();
+        if (res_notifi != null) {
+            notification_tbl.setModel(DbUtils.resultSetToTableModel(res_notifi));
+        }
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1776,6 +1867,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JButton change_pwd;
     private javax.swing.JButton clear_add_inv;
     private javax.swing.JButton clear_cat_form;
+    private javax.swing.JButton clear_notification;
     private javax.swing.JButton clear_user_form;
     private javax.swing.JPasswordField confirm_pwd;
     private javax.swing.JPasswordField current_pwd;
@@ -1818,9 +1910,11 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel logout;
     private javax.swing.JProgressBar logout_ProgressBar;
     private javax.swing.JPanel logout_panel;
@@ -1829,6 +1923,8 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPanel menus;
     private javax.swing.JPanel menus_bg;
     private javax.swing.JPasswordField new_pwd;
+    private javax.swing.JTextArea notification_loader;
+    private javax.swing.JTable notification_tbl;
     private javax.swing.JButton remove_cat;
     private javax.swing.JButton remove_user;
     private javax.swing.JPanel report_panel;

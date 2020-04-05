@@ -401,40 +401,25 @@ public class Admin implements Users {
 
     }
 
-    public void update_inventory(int stock_id, String product_category, String product_name, int qty, float purchasing_price, float selling_price, String date) {
+    public void update_inventory(int stock_id, String product_name, int quantitiy, float purchasing_price, float selling_price) {
 
-       /* ResultSet res = null;
-        String get_product_catIDQ = "SELECT `cat_id` FROM `category` WHERE `cat_name` = '" + product_category + "'";
-        System.out.println(get_product_catIDQ);
+       
+      /* String updateinventoryQ = "UPDATE `inventory` SET `product_name`= '"+product_name+"',`quantity`="+quantitiy+",`purchasing_price`= "+ String.format("%.02f", purchasing_price)+" ,`selling_price`= "+ String.format("%.02f", selling_price)+" WHERE `stock_id` = " + stock_id;
 
+        System.out.println(updateinventoryQ);
+       
         PreparedStatement qstate;
+
         try {
+            qstate = (PreparedStatement) con.prepareStatement(updateinventoryQ);
 
-            qstate = (PreparedStatement) con.prepareStatement(get_product_catIDQ);
-            res = qstate.executeQuery();
+           
+            qstate.execute();
+            JOptionPane.showMessageDialog(null, "Successfully updated the stock.");
 
-            if (res.next()) {
-
-                String add_invQ = "INSERT INTO `inventory`(`stock_id`, `product_category`, `product_name`, `quantity`, `purchasing_price`, `selling_price`, `date`) VALUES ( " + stock_id + ", " + res.getString("cat_id") + ", '" + product_name + "', " + qty + ", " + stock_price + ", " + selling_price + ", '" + date + "')";
-
-                try {
-                    qstate = (PreparedStatement) con.prepareStatement(add_invQ);
-
-                    *//*Confirm and added one row*//*
-                    qstate.execute();
-                    JOptionPane.showMessageDialog(null, "Successfully added stock.");
-
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-                System.out.println(add_invQ);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }*/
-
     }
 
     public ResultSet get_all_stocks() {
@@ -692,8 +677,8 @@ public class Admin implements Users {
             
             selling_summary = selling_summary.concat("<tr> <th scope=\"row\">Total</th>");
             selling_summary = selling_summary.concat("<th>"+total_qty+"</th>");
-            selling_summary = selling_summary.concat("<th>"+total_cost+"</th>");
-            selling_summary = selling_summary.concat("<th>"+total_revenue+"</th>");
+            selling_summary = selling_summary.concat("<th>"+String.format("%.02f", total_cost)+"</th>");
+            selling_summary = selling_summary.concat("<th>"+String.format("%.02f", total_revenue)+"</th>");
             selling_summary = selling_summary.concat("</tr>");
             
     
@@ -732,7 +717,7 @@ public class Admin implements Users {
             
             str_returns = str_returns.concat("<tr> <th scope=\"row\">Total</th>");
             str_returns = str_returns.concat("<th>"+total_qty+"</th>");
-            str_returns = str_returns.concat("<th>"+total_loss_of_returns+"</th>");
+            str_returns = str_returns.concat("<th>"+String.format("%.02f", total_loss_of_returns)+"</th>");
             str_returns = str_returns.concat("</tr>");
             
             
@@ -742,7 +727,10 @@ public class Admin implements Users {
         }
         
         
-        System.out.println(str_purchased_qty);
+        String str_calclulation = String.format("%.02f", total_revenue) + " - " + String.format("%.02f", total_cost) + " - " + String.format("%.02f", total_loss_of_returns);
+        float float_profit_or_loss = total_revenue-total_cost-total_loss_of_returns;
+        
+       
 
         
         
@@ -879,6 +867,28 @@ public class Admin implements Users {
 "		</div>\n" +
 "	</div>" +                
                 
+
+                               
+                " <div class=\"row\">\n" +
+"		<div class=\"col-md-12\">\n" +
+"		 \n" +
+"		 \n" +
+"		 <table class=\"table mt-3 mb-3\">\n" +
+	              
+"		  <thead class=\"thead-light\">\n" +
+"			<tr>\n" +
+"			  <th scope=\"col\">Profit or loss this month : </th>\n" +
+"			  <th scope=\"col\">"+str_calclulation+"</th>\n" +
+"			  <th scope=\"col\">"+String.format("%.02f", float_profit_or_loss)+"</th>\n" +
+"			</tr>\n" +
+"		  </thead>\n" +
+		 
+"		</table>\n" +
+"\n" +
+"\n" +
+"		</div>\n" +
+"	</div>" +                
+                
                 
                 
 "</div>\n" +
@@ -891,4 +901,67 @@ public class Admin implements Users {
     
     
     /*=================================================================================================================================================*/
+    
+    
+    /*============================================================== notificaions ========================================================================*/  
+    
+    public ResultSet get_notifications(){
+        
+        ResultSet notifi_res = null;
+        
+        String notificaionsQ = "SELECT `notifi_id`as `Notification ID`, `description` as `Description` FROM `notification`";
+
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(notificaionsQ);
+            notifi_res = qstate.executeQuery();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return  notifi_res;
+    }
+    
+    public void change_notification_state(int notifi_id){
+        
+        String notification_updateQ = "UPDATE `notification` SET `state`= 1  WHERE `notifi_id` = " + notifi_id;
+        
+        PreparedStatement qstate;
+        try {
+            qstate = (PreparedStatement) con.prepareStatement(notification_updateQ);
+
+            /*insert*/
+            qstate.execute();
+          
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void delete_notification(String notifi_id){
+     
+        String notificaionsQ = "DELETE FROM `notification` WHERE `notifi_id` = " + notifi_id;
+        
+        System.out.println(notificaionsQ);
+
+        PreparedStatement qstate;
+        try {
+
+            qstate = (PreparedStatement) con.prepareStatement(notificaionsQ);
+            qstate.execute();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+ 
+    }
+    
+    /*=========================================================================================================================================================*/
+    
+    
+    
+    
+    
 }

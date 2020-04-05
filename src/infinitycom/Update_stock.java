@@ -1,15 +1,23 @@
 
 package infinitycom;
 
+import javax.swing.JOptionPane;
+import users.Admin;
+
 
 public class Update_stock extends javax.swing.JFrame {
 
-    
+    Admin admin;
+     
     public Update_stock() {
         initComponents();
     }
 
-    
+    public Update_stock(Admin admin) {
+        initComponents();
+        this.admin = admin;
+    }
+     
     public void set_update_stock_form(String product_cat, String stock_id, String stock_name, String quantitiy, String stock_price, String selling_price){
     
             edit_product_cat.removeAllItems();
@@ -17,7 +25,7 @@ public class Update_stock extends javax.swing.JFrame {
             edit_stock_id.setText(stock_id);
             edit_stock_name.setText(stock_name);
             edit_quantitiy.setText(quantitiy);
-            edit_stock_price.setText(stock_price);
+            edit_purchasing_price.setText(stock_price);
             edit_selling_price.setText(selling_price);
             
     }
@@ -30,14 +38,13 @@ public class Update_stock extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         edit_stock_id = new javax.swing.JTextField();
         update_stock = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         edit_stock_name = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         edit_product_cat = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         edit_quantitiy = new javax.swing.JTextField();
-        edit_stock_price = new javax.swing.JTextField();
+        edit_purchasing_price = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         edit_selling_price = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
@@ -63,9 +70,6 @@ public class Update_stock extends javax.swing.JFrame {
             }
         });
 
-        jButton10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton10.setText("Clear");
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Product Name (optional)");
 
@@ -82,10 +86,10 @@ public class Update_stock extends javax.swing.JFrame {
 
         edit_quantitiy.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        edit_stock_price.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        edit_purchasing_price.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel12.setText("Stock price");
+        jLabel12.setText("Purchasing price");
 
         edit_selling_price.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -106,7 +110,7 @@ public class Update_stock extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(edit_selling_price, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(edit_stock_price, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(edit_purchasing_price, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(edit_quantitiy, javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,9 +119,7 @@ public class Update_stock extends javax.swing.JFrame {
                             .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
-                                .addGap(65, 65, 65)
-                                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(172, 172, 172)
                                 .addComponent(update_stock, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -145,15 +147,13 @@ public class Update_stock extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(edit_stock_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(edit_purchasing_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(edit_selling_price, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(update_stock, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(update_stock, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -179,7 +179,19 @@ public class Update_stock extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void update_stockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_update_stockActionPerformed
-
+        
+        try{
+            int stock_id = Integer.parseInt(edit_stock_id.getText());
+            String product_name = edit_stock_name.getText();
+            int quantitiy = Integer.parseInt(edit_quantitiy.getText());
+            float purchasing_price = Float.parseFloat(edit_purchasing_price.getText());
+            float selling_price = Float.parseFloat(edit_selling_price.getText());
+            
+            admin.update_inventory(stock_id, product_name, quantitiy, purchasing_price, selling_price);
+            
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_update_stockActionPerformed
 
     /**
@@ -219,12 +231,11 @@ public class Update_stock extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> edit_product_cat;
+    private javax.swing.JTextField edit_purchasing_price;
     private javax.swing.JTextField edit_quantitiy;
     private javax.swing.JTextField edit_selling_price;
     private javax.swing.JTextField edit_stock_id;
     private javax.swing.JTextField edit_stock_name;
-    private javax.swing.JTextField edit_stock_price;
-    private javax.swing.JButton jButton10;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

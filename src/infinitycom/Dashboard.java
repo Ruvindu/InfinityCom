@@ -28,6 +28,7 @@ public class Dashboard extends javax.swing.JFrame {
     Encryption enc = Encryption.getEncryption();
     ResultSet selling_stock_details;
   
+    private int current_product_available_qty;
     
     public Dashboard() {
         initComponents();
@@ -916,6 +917,8 @@ public class Dashboard extends javax.swing.JFrame {
                 p_price.setText(selling_stock_details.getString("selling_price"));
                 p_qty.setText("1");
                 p_discount.setText("0");
+                
+                this.current_product_available_qty = Integer.parseInt(selling_stock_details.getString("quantity"));
                         
             }else{
                 p_name.setText("");
@@ -994,36 +997,42 @@ public class Dashboard extends javax.swing.JFrame {
             float float_pgrossprice = Float.parseFloat(str_pgrossprice);
             float float_pdiscount = Float.parseFloat(str_pdiscount);
             
-            float net_price;
-            if(float_pdiscount>0){
-                net_price = (float_pgrossprice*int_qty)-((float_pgrossprice*int_qty)*(float_pdiscount/100));
-            }else{
-                net_price = (float_pgrossprice*int_qty);
-            }
-            
-             DecimalFormat decimalFormat = new DecimalFormat("#.00");
-             String str_net_price = decimalFormat.format(net_price);
-        
-             String data[] = {str_pid,str_pname,Float.toString(float_pgrossprice),Integer.toString(int_qty),Float.toString(float_pdiscount),str_net_price};
-                
-                DefaultTableModel model = (DefaultTableModel) p_list.getModel();
-                model.addRow(data);
-                
-                /*calc total amount*/
-                
-                   /*Float current_amount =  Float.parseFloat(p_total.getText());
-                   Float new_amount = current_amount + net_price;
-                   p_total.setText(String.valueOf(new_amount));*/
-                   
-                   calc_total();
-                /**/
-                
-                
-                set_latest_inv_num();
-                billing_date.setText(date_now());
-                
-                print_bill.setEnabled(true);
-                fresh_dashboard_form();
+                if(int_qty <= this.current_product_available_qty){
+
+                    float net_price;
+                    if(float_pdiscount>0){
+                        net_price = (float_pgrossprice*int_qty)-((float_pgrossprice*int_qty)*(float_pdiscount/100));
+                    }else{
+                        net_price = (float_pgrossprice*int_qty);
+                    }
+
+                     DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                     String str_net_price = decimalFormat.format(net_price);
+
+                     String data[] = {str_pid,str_pname,Float.toString(float_pgrossprice),Integer.toString(int_qty),Float.toString(float_pdiscount),str_net_price};
+
+                        DefaultTableModel model = (DefaultTableModel) p_list.getModel();
+                        model.addRow(data);
+
+                        /*calc total amount*/
+
+                           /*Float current_amount =  Float.parseFloat(p_total.getText());
+                           Float new_amount = current_amount + net_price;
+                           p_total.setText(String.valueOf(new_amount));*/
+
+                           calc_total();
+                        /**/
+
+
+                        set_latest_inv_num();
+                        billing_date.setText(date_now());
+
+                        print_bill.setEnabled(true);
+                        fresh_dashboard_form();
+                        
+                }else{
+                    JOptionPane.showMessageDialog(null, "Quantity not enough in stock.", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
                 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Enter valid details.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1083,11 +1092,15 @@ public class Dashboard extends javax.swing.JFrame {
         boolean purchase_success = cashier.purchases_process(invoice_number.getText(), date_now(), time_now(), tableData, nRow, nCol);
         
         if(purchase_success){
+            
             fresh_dashboard_form();
             fresh_list_table();
             fresh_inv_info();
 
             print_bill.setEnabled(false);
+            
+           
+            
             
         }
     }//GEN-LAST:event_print_billActionPerformed
