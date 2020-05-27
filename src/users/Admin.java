@@ -1,7 +1,20 @@
 package users;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mysql.jdbc.Connection;
 import infinitycom.DBConnection;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +22,8 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.krysalis.barcode4j.impl.code128.Code128Bean;
+import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 
 /**
  *
@@ -363,9 +378,9 @@ public class Admin implements Users {
 
     }
 
-    /*=========================================================================================================================================================*/
+ /*====================================================================================================================================================*/
  /*=================================================== Inventory =====================================================================================*/
-    public void add_inventory(int stock_id, String product_category, String product_name, int qty, float purchasing_price, float selling_price, String date) {
+    public void add_inventory(int stock_id, String product_category, String product_name, int qty, float purchasing_price, float selling_price, String date, String barcode_location) {
 
         ResultSet res = null;
         String get_product_catIDQ = "SELECT `cat_id` FROM `category` WHERE `cat_name` = '" + product_category + "'";
@@ -387,6 +402,9 @@ public class Admin implements Users {
                     /*Confirm and added one row*/
                     qstate.execute();
                     JOptionPane.showMessageDialog(null, "Successfully added stock.");
+                    
+                    /*Genatere barcode*/
+                     barcode_generate(String.valueOf(stock_id).toString(),barcode_location);
 
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -962,6 +980,66 @@ public class Admin implements Users {
     
     
     
+    
+    /*================================================================= Generate barcode =======================================================================*/
+    
+     public void barcode_generate(String stock_id,String barcode_location) throws FileNotFoundException, IOException, BadElementException, DocumentException{
+        Code128Bean code128 = new Code128Bean();
+        code128.setHeight(15f);
+        code128.setModuleWidth(0.3);
+        code128.setQuietZone(10);
+        code128.doQuietZone(true);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BitmapCanvasProvider canvas = new BitmapCanvasProvider(baos, "image/x-png", 400, BufferedImage.TYPE_BYTE_BINARY, false, 0);
+        code128.generateBarcode(canvas, stock_id);
+        canvas.finish();
+
+//write to png file
+        /*FileOutputStream fos = new FileOutputStream("barcode.png");
+        fos.write(baos.toByteArray());
+        fos.flush();
+        fos.close();*/
+
+//write to pdf
+        Image png = Image.getInstance(baos.toByteArray());
+        png.setAbsolutePosition(0, 705);
+        png.scalePercent(25);
+
+        Document document;
+        document = new Document();
+        PdfPTable table = new PdfPTable(3);
+        table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+        for (int aw = 0; aw < 27; aw++) {
+            Paragraph p = new Paragraph("");
+            p.add("");
+//            p.add(createImageCell(png));
+            PdfPTable intable = new PdfPTable(1);
+            intable.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+            intable.addCell(p);
+            intable.addCell(png);
+            intable.getDefaultCell().setBorder(0);
+            
+            table.addCell(intable);
+        }
+//        table.setBorder(Border.NO_BORDER);
+        Paragraph p = new Paragraph("");
+        p.add("");
+        p.add(png);
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(barcode_location + "\\" + stock_id+ ".pdf"));
+        document.open();
+//        document.add();
+        document.add(table);
+        document.close();
+
+        writer.close();
+     
+     
+     }
+    
+    
+    
+     /*=========================================================================================================================================================*/
     
     
 }

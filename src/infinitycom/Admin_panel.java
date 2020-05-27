@@ -1,5 +1,6 @@
 package infinitycom;
 
+import com.itextpdf.text.DocumentException;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.io.File;
@@ -12,7 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.spi.DirectoryManager;
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
@@ -103,6 +106,11 @@ public class Admin_panel extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         add_selling_price = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        file_location = new javax.swing.JTextField();
+        browese = new javax.swing.JButton();
+        open_file_locaion = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         inventory_table = new javax.swing.JTable();
@@ -742,6 +750,56 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jPanel9.setBackground(new java.awt.Color(250, 250, 250));
+        jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Barcode ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 13), new java.awt.Color(102, 102, 102))); // NOI18N
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("File Location");
+
+        browese.setText("Browse");
+        browese.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                broweseActionPerformed(evt);
+            }
+        });
+
+        open_file_locaion.setText("Open file location");
+        open_file_locaion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                open_file_locaionActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(file_location, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(browese)
+                .addContainerGap(15, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(open_file_locaion, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(file_location, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(browese))
+                .addGap(36, 36, 36)
+                .addComponent(open_file_locaion)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -749,13 +807,17 @@ public class Admin_panel extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(45, 45, 45)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(431, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1148,7 +1210,7 @@ public class Admin_panel extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(clear_notification, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1250,6 +1312,8 @@ public class Admin_panel extends javax.swing.JFrame {
         refresh_inv_add_form();
         refresh_inventory_tbl();
       
+        /* set barcode pdf path */
+       set_default_save_location();
         
     }//GEN-LAST:event_inventoryMouseClicked
 
@@ -1621,7 +1685,10 @@ public class Admin_panel extends javax.swing.JFrame {
             Date date = new Date();
             String d = formatter.format(date);
 
-            this.admin.add_inventory(product_id, product_category, product_name, qty, purchasing_price, selling_price, d);
+            /*Barcode location*/
+            String BCL = file_location.getText();
+            
+            this.admin.add_inventory(product_id, product_category, product_name, qty, purchasing_price, selling_price, d, BCL);
             refresh_inventory_tbl();
 
         } catch (Exception e) {
@@ -1713,6 +1780,41 @@ public class Admin_panel extends javax.swing.JFrame {
         clear_notification.setEnabled(false);
         
     }//GEN-LAST:event_clear_notificationActionPerformed
+
+    private void set_default_save_location(){
+         String username = System.getProperty("user.name");
+         String save_here = "C:\\Users\\"+username+"\\Documents";
+         file_location.setText(save_here);
+    }
+    
+    private void open_file_locaionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_open_file_locaionActionPerformed
+        
+        Desktop desktop = Desktop.getDesktop();
+        File dirToOpen = null;
+        try {
+            dirToOpen = new File( file_location.getText());
+            desktop.open(dirToOpen);
+        } catch (IllegalArgumentException | IOException ex) {
+            JOptionPane.showMessageDialog(null, "Location not found", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    
+    }//GEN-LAST:event_open_file_locaionActionPerformed
+
+    private void broweseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_broweseActionPerformed
+        
+        final JFileChooser fc = new JFileChooser();
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+       
+        int response = fc.showOpenDialog(this);
+        if(response == JFileChooser.APPROVE_OPTION){
+            file_location.setText(fc.getSelectedFile().toString());
+        }else{
+            JOptionPane.showMessageDialog(null, "The directory operation was canceld.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        
+    }//GEN-LAST:event_broweseActionPerformed
 
     private void write_and_excute_report(String report){
         
@@ -1860,6 +1962,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JTextField add_selling_price;
     private javax.swing.JTextField add_stock_id;
     private javax.swing.JPanel barcode_config;
+    private javax.swing.JButton browese;
     private javax.swing.JButton cat_btn;
     private javax.swing.JTextField cat_name;
     private javax.swing.JTable categoty_table;
@@ -1876,6 +1979,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JTextField edit_user_email;
     private javax.swing.JTextField edit_user_name;
     private com.toedter.calendar.JDateChooser end_dateChooser;
+    private javax.swing.JTextField file_location;
     private javax.swing.JPanel header;
     private javax.swing.JLabel header_text;
     private javax.swing.JLabel inventory;
@@ -1902,6 +2006,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1910,6 +2015,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -1925,6 +2031,7 @@ public class Admin_panel extends javax.swing.JFrame {
     private javax.swing.JPasswordField new_pwd;
     private javax.swing.JTextArea notification_loader;
     private javax.swing.JTable notification_tbl;
+    private javax.swing.JButton open_file_locaion;
     private javax.swing.JButton remove_cat;
     private javax.swing.JButton remove_user;
     private javax.swing.JPanel report_panel;

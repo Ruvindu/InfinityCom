@@ -232,7 +232,7 @@ public class Cashier implements Users {
 
             /*Confirm and update one row*/
             qstate.execute();
-            JOptionPane.showMessageDialog(null, "Successfully changed your password.");
+            JOptionPane.showMessageDialog(null, "Successfully retured.");
             
 
         } catch (SQLException ex) {
