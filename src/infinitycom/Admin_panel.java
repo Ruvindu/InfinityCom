@@ -1809,7 +1809,7 @@ public class Admin_panel extends javax.swing.JFrame {
         if(response == JFileChooser.APPROVE_OPTION){
             file_location.setText(fc.getSelectedFile().toString());
         }else{
-            JOptionPane.showMessageDialog(null, "The directory operation was canceld.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "The directory operation was canceld.");
         }
         
         
