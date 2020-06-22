@@ -330,5 +330,10 @@ public class Cashier implements Users {
     
     
     /*=========================================================================================================================================================*/
+
+    @Override
+    public void update_inventory(int stock_id, String product_name, int quantitiy, float purchasing_price, float selling_price) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

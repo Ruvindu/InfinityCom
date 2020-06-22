@@ -26,8 +26,6 @@ public class Admin_panel extends javax.swing.JFrame {
     Admin admin;
 
     Encryption enc = Encryption.getEncryption();
-
-    Update_stock update_stock = new Update_stock(admin);
     
     public Admin_panel() {
         initComponents();
@@ -856,6 +854,11 @@ public class Admin_panel extends javax.swing.JFrame {
 
         stock_remove.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         stock_remove.setText("Remove");
+        stock_remove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                stock_removeActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -1713,8 +1716,6 @@ public class Admin_panel extends javax.swing.JFrame {
             ResultSet selected_stock_res = this.admin.get_selected_stock();
             if (selected_stock_res.next()) {
 
-                update_stock.set_update_stock_form(selected_stock_res.getString("product_category"), selected_stock_res.getString("stock_id"), selected_stock_res.getString("product_name"), selected_stock_res.getString("quantity"),selected_stock_res.getString("purchasing_price") , selected_stock_res.getString("selling_price") );
-
                 stock_update.setEnabled(true);
                 stock_remove.setEnabled(true);
 
@@ -1728,8 +1729,18 @@ public class Admin_panel extends javax.swing.JFrame {
 
     private void stock_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stock_updateActionPerformed
         
-        update_stock.setVisible(true);
-        
+        DefaultTableModel model = (DefaultTableModel) inventory_table.getModel();
+        int selected_row_index = inventory_table.getSelectedRow();
+
+        /*Get selected id*/
+        int stock_id = Integer.parseInt(model.getValueAt(selected_row_index, 0).toString());
+        String product_name = model.getValueAt(selected_row_index, 2).toString();
+        int quantitiy = Integer.parseInt( model.getValueAt(selected_row_index, 3).toString());
+        float purchasing_price = Float.parseFloat( model.getValueAt(selected_row_index, 4).toString());
+        float selling_price = Float.parseFloat( model.getValueAt(selected_row_index, 5).toString());
+
+        admin.update_inventory(stock_id, product_name, quantitiy, purchasing_price, selling_price);
+ 
     }//GEN-LAST:event_stock_updateActionPerformed
 
     private void view_reportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_view_reportActionPerformed
@@ -1815,6 +1826,13 @@ public class Admin_panel extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_broweseActionPerformed
+
+    private void stock_removeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stock_removeActionPerformed
+        
+        this.admin.delete_inventory();
+        refresh_inventory_tbl();
+        
+    }//GEN-LAST:event_stock_removeActionPerformed
 
     private void write_and_excute_report(String report){
         

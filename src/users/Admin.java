@@ -421,8 +421,8 @@ public class Admin implements Users {
 
     public void update_inventory(int stock_id, String product_name, int quantitiy, float purchasing_price, float selling_price) {
 
-       
-      /* String updateinventoryQ = "UPDATE `inventory` SET `product_name`= '"+product_name+"',`quantity`="+quantitiy+",`purchasing_price`= "+ String.format("%.02f", purchasing_price)+" ,`selling_price`= "+ String.format("%.02f", selling_price)+" WHERE `stock_id` = " + stock_id;
+       System.out.println(stock_id);
+       String updateinventoryQ = "UPDATE `inventory` SET `product_name`= '"+product_name+"',`quantity`="+quantitiy+",`purchasing_price`= "+ String.format("%.02f", purchasing_price)+" ,`selling_price`= "+ String.format("%.02f", selling_price)+" WHERE `stock_id` = " + stock_id;
 
         System.out.println(updateinventoryQ);
        
@@ -437,8 +437,28 @@ public class Admin implements Users {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }*/
+        }
     }
+    
+    
+    public void delete_inventory() {
+
+       
+       String updateinventoryQ = "DELETE FROM `inventory` WHERE `stock_id` = " + this.selected_stock;
+    
+        PreparedStatement qstate;
+
+        try {
+            qstate = (PreparedStatement) con.prepareStatement(updateinventoryQ);
+           
+            qstate.execute();
+            JOptionPane.showMessageDialog(null, "Successfully deleted the stock.");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 
     public ResultSet get_all_stocks() {
 
